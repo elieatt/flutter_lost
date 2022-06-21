@@ -16,6 +16,7 @@ class ItemsCubit extends Cubit<ItemsState> {
     repo.fetchItems().then((items) {
       if (items.isEmpty) {
         emit(ItemsNoItemsFound());
+        return;
       }
       print(items);
       emit(ItemsFound(items: items));

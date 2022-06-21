@@ -43,25 +43,31 @@ class AuthRepository {
     print(response.statusCode);
     if (response.statusCode == 200) {
       user = User.fromMap(parsedBody["user"]);
-      ////print("storing with shared prefrence in authrepo.dart 45");
+      String timeOfExpire =
+          DateTime.now().add(Duration(days: 2)).toIso8601String();
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("id", user.id);
       //print("stored id ");
       await prefs.setString("token", user.token);
       await prefs.setString("email", user.email);
+      await prefs.setString("expire", timeOfExpire);
     }
     return (parsedBody);
   }
 
-  Future<User?> getStoredToken() async {
+  Future<Map<String, dynamic>?> getStoredToken() async {
     final prefs = await SharedPreferences.getInstance();
-    String? id, token, email;
+    String? id, token, email, expire;
     //print('id is ${id}');
     id = prefs.getString("id");
     token = prefs.getString("token");
     email = prefs.getString("email");
+    expire = prefs.getString("expire");
     if (id != null && token != null && email != null) {
-      return User(email: email, id: id, token: token);
+      return {
+        "user": User(email: email, id: id, token: token),
+        "expire": expire
+      };
     }
     return null;
   }
@@ -71,5 +77,6 @@ class AuthRepository {
     await prefs.remove('id');
     await prefs.remove('email');
     await prefs.remove('token');
+    await prefs.remove("expire");
   }
 }

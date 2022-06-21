@@ -29,7 +29,6 @@ environment:
 dependencies:
   awesome_dialog: ^2.2.1
   cupertino_icons: ^1.0.2
-  another_flushbar: ^1.10.29
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
@@ -37,6 +36,7 @@ dependencies:
   http: ^0.13.4
   path_provider: ^2.0.11
   shared_preferences: ^2.0.15
+  connectivity_plus: ^2.3.5
 
 dev_dependencies:
   flutter_lints: ^1.0.0

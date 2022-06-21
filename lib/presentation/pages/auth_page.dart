@@ -15,7 +15,7 @@ class AuthPage extends StatefulWidget {
 }
 
 class AuthPageState extends State<AuthPage> {
-  AuthMode _mode = AuthMode.signup;
+  AuthMode _mode = AuthMode.login;
   late String _email;
   late String _password;
   bool _acceptterms = false;
@@ -172,7 +172,7 @@ class AuthPageState extends State<AuthPage> {
     if (!_formkey.currentState!.validate() || !_acceptterms) return;
     _formkey.currentState!.save();
     if (_mode == AuthMode.signup) {
-      BlocProvider.of<AuthCubit>(context).SignUp(_email, _password);
+      BlocProvider.of<AuthCubit>(context).signUP(_email, _password);
     } else {
       BlocProvider.of<AuthCubit>(context).login(_email, _password);
     }

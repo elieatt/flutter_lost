@@ -1,9 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:lostsapp/data/repositories/auth_repository.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
+import 'package:lostsapp/logic/cubit/internet_cubit.dart';
 import 'package:lostsapp/presentation/router/app_router.dart';
 
 import 'data/network_services/items_netwroks_service.dart';
@@ -36,7 +38,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => AuthCubit(authRepo)),
-        BlocProvider<ItemsCubit>(create: (context) => ItemsCubit(itemsRepo))
+        BlocProvider<ItemsCubit>(create: (context) => ItemsCubit(itemsRepo)),
+        BlocProvider(
+            create: (context) => InternetCubit(connectivity: Connectivity()))
       ],
       child: MaterialApp(
         theme: ThemeData(

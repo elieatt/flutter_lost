@@ -28,4 +28,9 @@ class Item {
         user: d["user"],
         found: d["found"]);
   }
+
+  /*  @override
+  String toString() {
+    return 'Item(id: $id, title: $title, description: $description, imageUrl: $imageUrl, dateofloss: $dateofloss, found: $found, user: $user)';
+  } */
 }

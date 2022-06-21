@@ -1,48 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:another_flushbar/flushbar.dart';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 
 _showDialogAlert(context) {
   AwesomeDialog(
-    context: context,
-    animType: AnimType.SCALE,
-    dialogType: DialogType.WARNING,
-    body: const Center(
-      child: Text(
-        'You Will Log Out!',
-        style: TextStyle(fontStyle: FontStyle.italic),
+      btnOkColor: Theme.of(context).accentColor,
+      context: context,
+      animType: AnimType.SCALE,
+      dialogType: DialogType.WARNING,
+      body: const Center(
+        child: Text(
+          'You Will Log Out!',
+          style: TextStyle(fontStyle: FontStyle.italic),
+        ),
       ),
-    ),
-    title: 'This is Ignored',
-    desc: 'This is also Ignored',
-    btnCancelOnPress: () {},
-    btnCancelText: 'Cancel',
-    btnOkText: " Countinue",
-    btnOkOnPress: () {
-      BlocProvider.of<AuthCubit>(context).logOut();
-      Flushbar(
-        flushbarPosition: FlushbarPosition.TOP,
-        duration: const Duration(seconds: 3),
-        icon: const Icon(
-          Icons.done,
-          size: 40,
-          color: Colors.green,
-        ),
-        backgroundColor: Colors.white,
-        messageText: const Text(
-          'Successful LogIn',
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.grey,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ).show(context);
-    },
-  ).show();
+      title: 'This is Ignored',
+      desc: 'This is also Ignored',
+      btnCancelOnPress: () {},
+      btnCancelText: 'Cancel',
+      btnOkText: " Countinue",
+      btnOkOnPress: () {
+        BlocProvider.of<AuthCubit>(context).logOut();
+      }).show();
 }
 
 Widget buildDrawer(BuildContext context) {
@@ -54,7 +34,7 @@ Widget buildDrawer(BuildContext context) {
           color: Colors.black,
         ),
         automaticallyImplyLeading: false,
-        title: Text('Options'),
+        title: const Text('Options'),
       ),
       ListTile(
         leading: const Icon(Icons.account_circle),
