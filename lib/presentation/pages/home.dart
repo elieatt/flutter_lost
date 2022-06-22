@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:lostsapp/presentation/pages/found_items.dart';
+import 'package:lostsapp/logic/cubit/auth_cubit.dart';
+import 'package:lostsapp/presentation/pages/found_items_pages.dart';
+import 'package:lostsapp/presentation/pages/missing_items_page.dart';
 import '../../logic/cubit/items_cubit.dart';
 import '../widgets/bottombar.dart';
 import '../widgets/drawer.dart';
@@ -13,30 +15,61 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   int _selectedindex = 1;
-  /* void _navigator(int index) {
-    setState(() {
-      _selectedindex = index;
-    });
-  } */
+
+  late TabController _tabController;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: 2);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ItemsCubit>(context).fetchItems();
-    return Scaffold(
-        drawer: buildDrawer(context),
-        appBar: AppBar(
-          actions: [],
-          title: const Center(
-            child: Text(
-              "Homd Page",
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is! AuthLoginedIn) {
+          Navigator.of(context).pushReplacementNamed('/');
+        }
+      },
+      child: Scaffold(
+          drawer: buildDrawer(context),
+          appBar: AppBar(
+            actions: [],
+            bottom: TabBar(
+              controller: _tabController,
+              labelColor: Colors.white,
+              tabs: const [
+                Tab(
+                  text: 'Missing',
+                  icon: Icon(Icons.search_off),
+                ),
+                Tab(
+                  text: 'Found things',
+                  icon: Icon(Icons.search_outlined),
+                )
+              ],
+            ),
+            title: const Center(
+              child: Text(
+                "Homd Page",
+              ),
             ),
           ),
-        ),
-        body: FoundItems(),
-        floatingActionButton: FAQ(),
-        bottomNavigationBar: buildBottomNavigator(context, _selectedindex));
+          body: TabBarView(
+              controller: _tabController,
+              children: [MissingPage(), FoundItemsPage()]),
+          floatingActionButton: FAQ(),
+          bottomNavigationBar: buildBottomNavigator(context, _selectedindex)),
+    );
   }
 
   Widget FAQ() {
@@ -49,7 +82,7 @@ class HomePageState extends State<HomePage> {
         SpeedDialChild(
           label: "Favorite",
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.favorite_border,
               color: Colors.red,
             ),
@@ -61,7 +94,7 @@ class HomePageState extends State<HomePage> {
         SpeedDialChild(
           label: "Lost",
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.search_off,
               color: Colors.black,
             ),
@@ -73,7 +106,7 @@ class HomePageState extends State<HomePage> {
         SpeedDialChild(
           label: "Fond",
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.search_outlined,
               color: Colors.black,
             ),
@@ -85,7 +118,7 @@ class HomePageState extends State<HomePage> {
         SpeedDialChild(
           label: "Home Page",
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.home_rounded,
             ),
             onPressed: () {

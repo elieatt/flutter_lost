@@ -40,11 +40,12 @@ class AuthRepository {
       return null;
     }
     parsedBody = jsonDecode(response.body);
-    print(response.statusCode);
+    // print(response.statusCode);
     if (response.statusCode == 200) {
       user = User.fromMap(parsedBody["user"]);
       String timeOfExpire =
-          DateTime.now().add(Duration(days: 2)).toIso8601String();
+          DateTime.now().add(const Duration(days: 2)).toIso8601String();
+      parsedBody["expire"] = timeOfExpire;
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("id", user.id);
       //print("stored id ");

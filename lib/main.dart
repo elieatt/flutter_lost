@@ -37,10 +37,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(create: (context) => AuthCubit(authRepo)),
-        BlocProvider<ItemsCubit>(create: (context) => ItemsCubit(itemsRepo)),
-        BlocProvider(
-            create: (context) => InternetCubit(connectivity: Connectivity()))
+        BlocProvider<AuthCubit>(
+          create: (context) => AuthCubit(authRepo),
+          lazy: false,
+        ),
+        BlocProvider<ItemsCubit>(
+            create: (context) => ItemsCubit(
+                  InternetCubit(connectivity: Connectivity()),
+                  itemsRepo,
+                )),
       ],
       child: MaterialApp(
         theme: ThemeData(

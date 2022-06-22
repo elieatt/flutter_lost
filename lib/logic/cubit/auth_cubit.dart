@@ -12,6 +12,7 @@ class AuthCubit extends Cubit<AuthState> {
   late Timer _authTimer;
   final AuthRepository repo;
   late User? user;
+  late DateTime _expire;
 
   AuthCubit(
     this.repo,
@@ -19,33 +20,32 @@ class AuthCubit extends Cubit<AuthState> {
     startUpLogin();
   }
 
-  void startUpLogin() {
-    DateTime expire;
-    repo.getStoredToken().then((mapofUserAndExpire) {
-      print(mapofUserAndExpire);
-
-      if (mapofUserAndExpire != null) {
-        expire = DateTime.parse(mapofUserAndExpire["expire"] as String);
-        if (expire.isBefore(DateTime.now())) {
-          return;
-        }
-        autoLogout(expire.difference(DateTime.now()).inSeconds);
-        user = mapofUserAndExpire["user"] as User;
-
-        emit(AuthLoginedIn(user: user!));
-      }
-    });
-  }
-
   Future signUP(String email, String password) async {
     emit(AuthProgress());
     Map<String, dynamic>? response = await repo.signup(email, password);
-    // print(response ?? "nores");
+
     if (response == null || response["message"] != "User was created") {
       emit(AuthFailed(response != null ? response["message"] : "Auth Failed "));
     } else {
       emit(AuthSignedUp());
     }
+  }
+
+  void startUpLogin() {
+    repo.getStoredToken().then((mapofUserAndExpire) {
+      //print(mapofUserAndExpire);
+
+      if (mapofUserAndExpire != null) {
+        _expire = DateTime.parse(mapofUserAndExpire["expire"] as String);
+        if (_expire.isBefore(DateTime.now())) {
+          return;
+        }
+        autoLogout(_expire.difference(DateTime.now()).inSeconds);
+        user = mapofUserAndExpire["user"] as User;
+
+        emit(AuthLoginedIn(user: user!));
+      }
+    });
   }
 
   Future login(String? email, String? password) async {
@@ -55,15 +55,11 @@ class AuthCubit extends Cubit<AuthState> {
       if (response == null || response["message"] != "auth succeded") {
         emit(AuthFailed(response!["message"] ?? "Auth failed"));
       } else {
+        _expire = DateTime.parse(response["expire"] as String);
+        autoLogout(_expire.difference(DateTime.now()).inSeconds);
         emit(AuthLoginedIn(user: User.fromMap(response["user"])));
       }
-    } /* else {
-      user = await repo.getStoredToken();
-      if (user != null) {
-        emit(AuthLoginedIn(user: user!));
-      } else {
-        emit(AuthInitial());
-       }*/
+    }
   }
 
   Future<void> logOut() async {

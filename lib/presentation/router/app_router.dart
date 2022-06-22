@@ -10,6 +10,7 @@ class AppRouter {
     switch (routeSettings.name) {
       case '/':
         return MaterialPageRoute(builder: (context) {
+          /*return AuthPage();*/
           return BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
             if (state is AuthLoginedIn) {
               return HomePage();
@@ -29,5 +30,6 @@ class AppRouter {
           }));
         });
     }
+    return null;
   }
 }

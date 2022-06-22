@@ -6,10 +6,11 @@ import '../models/item.dart';
 import 'package:http/http.dart' as http;
 
 class ItemsNetworkService {
-  Future<String> fetchItems() async {
+  Future<String> fetchItems(String token) async {
     http.Response response;
     try {
-      response = await http.get(Uri.parse(ENDPOINT + "/items"));
+      response = await http.get(Uri.parse(ENDPOINT + "/items"),
+          headers: {"Authorization": 'bare $token'});
     } catch (e) {
       print("error");
       print(e);
