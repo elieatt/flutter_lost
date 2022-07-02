@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 
 class Item {
   String id;
@@ -7,6 +6,8 @@ class Item {
   String description;
   String imageUrl;
   DateTime dateofloss;
+  String category;
+  String governorate;
   int found;
   Map<String, dynamic> user;
 
@@ -16,6 +17,8 @@ class Item {
       required this.description,
       required this.imageUrl,
       required this.dateofloss,
+      required this.category,
+      required this.governorate,
       required this.found,
       required this.user});
   factory Item.fromDynamic(d) {
@@ -24,8 +27,10 @@ class Item {
         title: d["title"].toString(),
         dateofloss: DateTime.parse(d["dateOfLoose"].toString()),
         description: d["description"].toString(),
+        category: d["category"].toString(),
+        governorate: d["governorate"].toString(),
         imageUrl: d["imageUrl"].toString(),
-        user: d["user"],
+        user: d["user"]!,
         found: d["found"]);
   }
 

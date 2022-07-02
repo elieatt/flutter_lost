@@ -7,7 +7,7 @@ AwesomeDialog buildAwrsomeDia(
   return AwesomeDialog(
       btnOkColor: Theme.of(context).accentColor,
       aligment: Alignment.center,
-      width: 400.0,
+      //width: 400.0,
       context: context,
       title: title,
       body: Center(

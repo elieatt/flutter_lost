@@ -16,18 +16,18 @@ BottomNavigationBar buildBottomNavigator(
       ),
       BottomNavigationBarItem(
         icon: IconButton(
-          icon: Icon(Icons.home),
+          icon: const Icon(Icons.home),
           onPressed: () {
-            // Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushReplacementNamed(context, '/home');
           },
         ),
         label: ('home'),
       ),
       BottomNavigationBarItem(
         icon: IconButton(
-          icon: Icon(Icons.add_box),
+          icon: const Icon(Icons.add_box),
           onPressed: () {
-            //Navigator.pushReplacementNamed(context, '/add');
+            Navigator.pushReplacementNamed(context, '/add');
           },
         ),
         label: 'add',

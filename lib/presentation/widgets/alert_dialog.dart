@@ -18,7 +18,7 @@ class BuildAlrtDialog {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.warning),
+              const Icon(Icons.warning),
               const SizedBox(
                 height: 30.0,
               ),

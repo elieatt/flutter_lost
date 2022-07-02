@@ -7,10 +7,17 @@ import 'package:lostsapp/constants/env.dart';
 import '../models/user.dart';
 
 class AuthRepository {
-  Future<Map<String, dynamic>?> signup(String email, String password) async {
+  Future<Map<String, dynamic>?> signup(
+      String email, String password, String phoneNumber) async {
     http.Response response;
     Map<String, dynamic> reqBody;
-    reqBody = {"email": email, "password": password};
+
+    reqBody = {
+      "email": email,
+      "password": password,
+      "phoneNumber": phoneNumber
+    };
+
     try {
       response = await http.post(Uri.parse(ENDPOINT + "/users/signup"),
           body: jsonEncode(reqBody),
@@ -19,16 +26,21 @@ class AuthRepository {
       print(e);
       return null;
     }
-    print(response.body);
-    Map<String, dynamic> parsedBody = jsonDecode(response.body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print(response.body);
 
-    return parsedBody;
+      Map<String, dynamic> parsedBody = jsonDecode(response.body);
+
+      return parsedBody;
+    } else {
+      return null;
+    }
   }
 
   Future<Map<String, dynamic>?> login(String email, String password) async {
     User user;
     http.Response response;
-    Map<String, dynamic> parsedBody;
+    Map<String, dynamic> parsedResult;
     Map<String, dynamic> reqBody;
     reqBody = {"email": email, "password": password};
     try {
@@ -36,37 +48,46 @@ class AuthRepository {
           body: jsonEncode(reqBody),
           headers: {'Content-Type': 'application/json'});
     } catch (e) {
+      print("error in login in auth repo");
       print(e);
       return null;
     }
-    parsedBody = jsonDecode(response.body);
+    parsedResult = jsonDecode(response.body);
     // print(response.statusCode);
     if (response.statusCode == 200) {
-      user = User.fromMap(parsedBody["user"]);
+      user = User.fromMap(parsedResult["user"]);
+      print(user);
       String timeOfExpire =
           DateTime.now().add(const Duration(days: 2)).toIso8601String();
-      parsedBody["expire"] = timeOfExpire;
+
+      parsedResult["expire"] = timeOfExpire;
+
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("id", user.id);
-      //print("stored id ");
       await prefs.setString("token", user.token);
       await prefs.setString("email", user.email);
+      await prefs.setString("phoneNumber", user.phoneNumber);
       await prefs.setString("expire", timeOfExpire);
     }
-    return (parsedBody);
+    return (parsedResult);
   }
 
   Future<Map<String, dynamic>?> getStoredToken() async {
+    //!
+
     final prefs = await SharedPreferences.getInstance();
-    String? id, token, email, expire;
-    //print('id is ${id}');
+    String? id, token, email, expire, phoneNumber;
+
     id = prefs.getString("id");
     token = prefs.getString("token");
     email = prefs.getString("email");
     expire = prefs.getString("expire");
-    if (id != null && token != null && email != null) {
+    phoneNumber = prefs.getString("phoneNumber");
+
+    if (id != null && token != null && email != null && phoneNumber != null) {
       return {
-        "user": User(email: email, id: id, token: token),
+        "user":
+            User(email: email, id: id, token: token, phoneNumber: phoneNumber),
         "expire": expire
       };
     }
@@ -75,9 +96,11 @@ class AuthRepository {
 
   Future<void> deleteStoredToke() async {
     final prefs = await SharedPreferences.getInstance();
+
     await prefs.remove('id');
     await prefs.remove('email');
     await prefs.remove('token');
     await prefs.remove("expire");
+    await prefs.remove("phoneNumber");
   }
 }

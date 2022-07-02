@@ -27,8 +27,6 @@ class ItemsCubit extends Cubit<ItemsState> {
 
   void listenToInternetCubit() {
     internetStreamSub = _internetCubit.stream.listen((event) {
-      print("dsa");
-      print(event);
       _internetState = event;
     });
   }
@@ -36,6 +34,7 @@ class ItemsCubit extends Cubit<ItemsState> {
   void fetchItems(String token) {
     emit(ItemsInitial());
     if (_internetState is InternetDisconnected) {
+      print("emitted no internet");
       emit(ItemsNoInternet());
       return;
     }
@@ -73,6 +72,7 @@ class ItemsCubit extends Cubit<ItemsState> {
     }
     repo.fetchLostItems(token).then((lostItems) {
       if (lostItems.isEmpty) {
+        print(lostItems);
         emit(ItemsNoItemsFound());
         return;
       }
@@ -88,7 +88,7 @@ class ItemsCubit extends Cubit<ItemsState> {
 
   @override
   void onChange(Change<ItemsState> change) {
-    // print(change);
+    print(change);
     super.onChange(change);
   }
 }

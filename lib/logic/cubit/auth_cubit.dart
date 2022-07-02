@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:lostsapp/data/repositories/auth_repository.dart';
@@ -17,21 +15,25 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
     this.repo,
   ) : super(AuthInitial()) {
-    startUpLogin();
+    startupLogin();
   }
 
-  Future signUP(String email, String password) async {
+  Future signUP(String email, String password, String phoneNumber) async {
     emit(AuthProgress());
-    Map<String, dynamic>? response = await repo.signup(email, password);
+
+    Map<String, dynamic>? response =
+        await repo.signup(email, password, phoneNumber);
 
     if (response == null || response["message"] != "User was created") {
-      emit(AuthFailed(response != null ? response["message"] : "Auth Failed "));
+      emit(AuthFailed(response == null
+          ? "Signup Failed  Check your internet connection"
+          : response["message"]));
     } else {
       emit(AuthSignedUp());
     }
   }
 
-  void startUpLogin() {
+  void startupLogin() {
     repo.getStoredToken().then((mapofUserAndExpire) {
       //print(mapofUserAndExpire);
 
@@ -41,6 +43,7 @@ class AuthCubit extends Cubit<AuthState> {
           return;
         }
         autoLogout(_expire.difference(DateTime.now()).inSeconds);
+
         user = mapofUserAndExpire["user"] as User;
 
         emit(AuthLoginedIn(user: user!));
@@ -48,27 +51,38 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future login(String? email, String? password) async {
-    if (email != null) {
-      emit(AuthProgress());
-      Map<String, dynamic>? response = await repo.login(email, password!);
-      if (response == null || response["message"] != "auth succeded") {
-        emit(AuthFailed(response!["message"] ?? "Auth failed"));
-      } else {
-        _expire = DateTime.parse(response["expire"] as String);
-        autoLogout(_expire.difference(DateTime.now()).inSeconds);
-        emit(AuthLoginedIn(user: User.fromMap(response["user"])));
-      }
+  Future login(String email, String password) async {
+    emit(AuthProgress());
+
+    Map<String, dynamic>? response = await repo.login(email, password);
+
+    if (response == null || response["message"] != "auth succeded") {
+      emit(AuthFailed(response == null
+          ? "Login Failed Check your internet connection"
+          : response['message']));
+    } else {
+      _expire = DateTime.parse(response["expire"] as String);
+      autoLogout(_expire.difference(DateTime.now()).inSeconds);
+      user = User.fromMap(response["user"]);
+
+      emit(AuthLoginedIn(user: user!));
     }
   }
 
   Future<void> logOut() async {
     await repo.deleteStoredToke();
     _authTimer.cancel();
+    user = null;
     emit(AuthInitial());
   }
 
   void autoLogout(int time) {
     _authTimer = Timer(Duration(seconds: time), logOut);
+  }
+
+  @override
+  void onChange(Change<AuthState> change) {
+    //print(change);
+    super.onChange(change);
   }
 }

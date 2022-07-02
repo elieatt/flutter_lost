@@ -18,8 +18,11 @@ class AuthPageState extends State<AuthPage> {
   AuthMode _mode = AuthMode.login;
   late String _email;
   late String _password;
+  late String _phoneNumber;
   bool _acceptterms = false;
+
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  //TextEditingController _phoneNumberController = TextEditingController();
 
   /* DecorationImage _buildBackgroundImage() {
     return DecorationImage(
@@ -138,6 +141,37 @@ class AuthPageState extends State<AuthPage> {
         });
   }
 
+  Widget _buildPhoneNumberTextFromField() {
+    return TextFormField(
+        initialValue: "+963",
+        //controller: _phoneNumberController,
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+          labelText: 'Enter your phone number',
+          labelStyle: const TextStyle(fontSize: 20, color: Colors.black),
+          filled: true,
+          icon: const Icon(
+            Icons.phone,
+            size: 40,
+            color: Colors.blue,
+          ),
+          fillColor: Colors.amber[100],
+          helperText: 'Phone number must start with 00963',
+          helperStyle: const TextStyle(fontSize: 15),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(width: 2, color: Colors.blue),
+          ),
+        ),
+        validator: (String? value) {
+          if (value == null || value.length < 13) {
+            return 'Please Enter a valid phone Number';
+          }
+        },
+        onSaved: (String? value) {
+          _phoneNumber = value!;
+        });
+  }
+
   Widget _buildAcceptSwitch() {
     return SwitchListTile(
       activeColor: Colors.blue,
@@ -172,7 +206,8 @@ class AuthPageState extends State<AuthPage> {
     if (!_formkey.currentState!.validate() || !_acceptterms) return;
     _formkey.currentState!.save();
     if (_mode == AuthMode.signup) {
-      BlocProvider.of<AuthCubit>(context).signUP(_email, _password);
+      BlocProvider.of<AuthCubit>(context)
+          .signUP(_email, _password, _phoneNumber);
     } else {
       BlocProvider.of<AuthCubit>(context).login(_email, _password);
     }
@@ -209,11 +244,11 @@ class AuthPageState extends State<AuthPage> {
               /* image: _buildBackgroundImage(), */
               ),
           child: Center(
-            child: SingleChildScrollView(
-              child: Container(
-                width: targetWidth,
-                child: Form(
-                  key: _formkey,
+            child: SizedBox(
+              width: targetWidth,
+              child: Form(
+                key: _formkey,
+                child: SingleChildScrollView(
                   child: Column(
                     children: [
                       _buildModeToggleButton(),
@@ -233,6 +268,10 @@ class AuthPageState extends State<AuthPage> {
                           : Column(
                               children: [
                                 _buildConfirmPasswordTextField(),
+                                const SizedBox(
+                                  height: 30.0,
+                                ),
+                                _buildPhoneNumberTextFromField(),
                                 const SizedBox(
                                   height: 30.0,
                                 )

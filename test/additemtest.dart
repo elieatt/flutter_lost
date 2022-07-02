@@ -17,7 +17,7 @@ Future<File> getImageFileFromAssets(String path) async {
   return file;
 }
 
-void testing() async {
+void main() async {
   File f = await getImageFileFromAssets('demo.png');
   final mimeTypeData = lookupMimeType(f.path)!.split("/");
   var imageUploadRequest =

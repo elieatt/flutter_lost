@@ -30,10 +30,18 @@ class _MissingPageState extends State<MissingPage> {
         );
       } else if (state is ItemsNoInternet) {
         return Center(
-            child: Column(children: const [
-          Icon(Icons.signal_wifi_off),
-          Text("Check your internet connection and try again")
-        ]));
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+              Icon(Icons.signal_wifi_off, size: 50),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Check your internet connection and try again",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )
+            ]));
       } else if (state is LostItemsFound) {
         return ListView.builder(
             itemCount: state.lostItems.length,
