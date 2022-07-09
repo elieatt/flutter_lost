@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 BottomNavigationBar buildBottomNavigator(
-    BuildContext context, int _selectedindex) {
+    BuildContext context, int _selectedindex, void Function(int) onTapped) {
   return BottomNavigationBar(
     type: BottomNavigationBarType.fixed,
     currentIndex: _selectedindex,
+    // onTap: onTapped,
     items: [
-      BottomNavigationBarItem(
+      /*  BottomNavigationBarItem(
         icon: IconButton(
           icon: Icon(Icons.mail),
           onPressed: () {
@@ -14,12 +15,12 @@ BottomNavigationBar buildBottomNavigator(
           },
         ),
         label: ('notification'),
-      ),
+      ), */
       BottomNavigationBarItem(
         icon: IconButton(
           icon: const Icon(Icons.home),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, '/home');
+            onTapped(0);
           },
         ),
         label: ('home'),
@@ -28,7 +29,7 @@ BottomNavigationBar buildBottomNavigator(
         icon: IconButton(
           icon: const Icon(Icons.add_box),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, '/add');
+            onTapped(1);
           },
         ),
         label: 'add',

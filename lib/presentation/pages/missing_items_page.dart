@@ -21,7 +21,7 @@ class _MissingPageState extends State<MissingPage> {
   Widget build(BuildContext context) {
     double pageHeight = MediaQuery.of(context).size.height;
     BlocProvider.of<ItemsCubit>(context)
-        .fetchLostItems(BlocProvider.of<AuthCubit>(context).user!.token, false);
+        .fetchLostItems(BlocProvider.of<AuthCubit>(context).user!.token, true);
     print('built');
 
     return RefreshIndicator(

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/presentation/pages/found_items_pages.dart';
 import 'package:lostsapp/presentation/pages/missing_items_page.dart';
+import 'package:lostsapp/presentation/widgets/app_bar.dart';
+import '../../data/repositories/post_and_update_network_repository.dart';
+import '../../logic/cubit/post_item_cubit.dart';
 import '../widgets/bottombar.dart';
 import '../widgets/drawer.dart';
+import 'add_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,63 +21,50 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   int _selectedindex = 0;
+  late TabController _homePageTabController;
+
+  final PageController _pageController = PageController();
   void onTapped(int index) {
     setState(() {
       _selectedindex = index;
     });
+    _pageController.jumpToPage(index);
   }
 
-  late TabController _tabController;
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 2);
+    _homePageTabController = TabController(vsync: this, length: 2);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _homePageTabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is! AuthLoginedIn) {
-          Navigator.of(context).pushReplacementNamed('/');
-        }
-      },
-      child: Scaffold(
-          drawer: buildDrawer(context),
-          appBar: AppBar(
-            actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list))
-            ],
-            bottom: TabBar(
-              controller: _tabController,
-              labelColor: Colors.white,
-              tabs: const [
-                Tab(
-                  text: 'Missing',
-                  icon: Icon(Icons.search_off),
-                ),
-                Tab(
-                  text: 'Found things',
-                  icon: Icon(Icons.search_outlined),
-                )
-              ],
-            ),
-            title: const Center(
-              child: Text(
-                "Home",
-              ),
+    return Scaffold(
+      drawer: buildDrawer(context),
+      appBar: buildAppBar(_selectedindex, _homePageTabController),
+      body: PageView(
+        controller: _pageController,
+        children: [
+          TabBarView(
+              controller: _homePageTabController,
+              children: [const MissingPage(), FoundItemsPage()]),
+          BlocProvider<PostItemCubit>(
+            lazy: false,
+            create: (context) => PostItemCubit(AddnUpdateRepository()),
+            child: AddPage(
+              onTapped: onTapped,
             ),
           ),
-          body: TabBarView(
-              controller: _tabController,
-              children: [MissingPage(), FoundItemsPage()]),
-          bottomNavigationBar: buildBottomNavigator(context, _selectedindex)),
+        ],
+      ),
+      bottomNavigationBar:
+          buildBottomNavigator(context, _selectedindex, onTapped),
     );
   }
 }

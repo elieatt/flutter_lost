@@ -2,7 +2,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lostsapp/data/repositories/add_and_update_network_repository.dart';
+import 'package:lostsapp/data/repositories/post_and_update_network_repository.dart';
 
 import 'package:lostsapp/data/repositories/auth_repository.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lostsapp/data/repositories/add_and_update_network_repository.dart';
+import 'package:lostsapp/data/repositories/post_and_update_network_repository.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/post_item_cubit.dart';
 import 'package:lostsapp/presentation/pages/add_page.dart';
@@ -31,19 +31,6 @@ class AppRouter {
           return BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
             if (state is AuthLoginedIn) {
               return HomePage();
-            } else {
-              return AuthPage();
-            }
-          }));
-        });
-      case '/add':
-        return MyCustomRoute(builder: (context) {
-          return BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
-            if (state is AuthLoginedIn) {
-              return BlocProvider<PostItemCubit>(
-                  lazy: false,
-                  create: (context) => PostItemCubit(AddnUpdateRepository()),
-                  child: const AddPage());
             } else {
               return AuthPage();
             }

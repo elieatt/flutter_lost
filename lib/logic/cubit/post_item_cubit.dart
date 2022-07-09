@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:lostsapp/data/repositories/add_and_update_network_repository.dart';
+import 'package:lostsapp/data/repositories/post_and_update_network_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'post_item_state.dart';

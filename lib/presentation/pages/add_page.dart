@@ -1,19 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:lostsapp/constants/list_of_classification.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/post_item_cubit.dart';
 import 'package:lostsapp/presentation/widgets/add_page_widgets/image.dart';
 import 'package:lostsapp/presentation/widgets/awesome_dia.dart';
-
-import '../widgets/bottombar.dart';
-import '../widgets/drawer.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 /* import 'dart:async';
 import 'package:flutter/services.dart' show rootBundle;
@@ -32,7 +30,11 @@ TextEditingController _typeTextController = TextEditingController();
 DateTime _nowDT = DateTime.now();
 
 class AddPage extends StatefulWidget {
-  const AddPage({Key? key}) : super(key: key);
+  final Function onTapped;
+  const AddPage({
+    Key? key,
+    required this.onTapped,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -42,12 +44,6 @@ class AddPage extends StatefulWidget {
 
 class AddPageState extends State<AddPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  int _selectedindex = 2;
-  /*  void _navigator(int index) {
-    setState(() {
-      _selectedindex = index;
-    });
-  } */
 
   @override
   void dispose() {
@@ -75,27 +71,20 @@ class AddPageState extends State<AddPage> {
     double width = MediaQuery.of(context).size.width;
     double tagetPadding = width > 600 ? width / 2 / 2 : width / 5 / 2;
     return BlocListener<PostItemCubit, PostItemState>(
-      listener: (context, state) {
-        if (state is PostItemFailed) {
-          buildAwrsomeDia(context, "Post Failed", state.message, "OK").show();
-        } else if (state is PostItemSuccessed) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-              "POSTED SUCCESSFULLY",
-            ),
-            duration: Duration(seconds: 1),
-          ));
-          Navigator.of(context).pushReplacementNamed("/home");
-        }
-      },
-      child: Scaffold(
-        drawer: buildDrawer(context),
-        appBar: AppBar(
-          title: const Center(
-            child: Text('Post An Item'),
-          ),
-        ),
-        body: Container(
+        listener: (context, state) {
+          if (state is PostItemFailed) {
+            buildAwrsomeDia(context, "Post Failed", state.message, "OK").show();
+          } else if (state is PostItemSuccessed) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                "POSTED SUCCESSFULLY",
+              ),
+              duration: Duration(seconds: 1),
+            ));
+            widget.onTapped(0);
+          }
+        },
+        child: Container(
           padding:
               EdgeInsets.symmetric(horizontal: tagetPadding, vertical: 30.0),
           child: Form(
@@ -144,9 +133,6 @@ class AddPageState extends State<AddPage> {
               ),
             ),
           ),
-        ),
-        bottomNavigationBar: buildBottomNavigator(context, _selectedindex),
-      ),
-    );
+        ));
   }
 }
