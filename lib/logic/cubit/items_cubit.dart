@@ -39,6 +39,10 @@ class ItemsCubit extends Cubit<ItemsState> {
       return;
     }
     repo.fetchAllItems(token).then((items) {
+      if (items == null) {
+        emit(ItemsNoInternet());
+        return;
+      }
       if (items.isEmpty) {
         emit(ItemsNoItemsFound());
         return;
@@ -48,14 +52,18 @@ class ItemsCubit extends Cubit<ItemsState> {
     });
   }
 
-  void fetchFoundItems(String token) {
+  void fetchFoundItems(String token, bool refresh) {
     // print("fetching found itmes");
     emit(ItemsInitial());
     if (_internetState is InternetDisconnected) {
       emit(ItemsNoInternet());
       return;
     }
-    repo.fetchFoundItems(token).then((foundItems) {
+    repo.fetchFoundItems(token, refresh).then((foundItems) {
+      if (foundItems == null) {
+        emit(ItemsNoInternet());
+        return;
+      }
       if (foundItems.isEmpty) {
         emit(ItemsNoItemsFound());
         return;
@@ -64,13 +72,17 @@ class ItemsCubit extends Cubit<ItemsState> {
     });
   }
 
-  void fetchLostItems(String token) {
+  Future<void> fetchLostItems(String token, bool refresh) async {
     emit(ItemsInitial());
     if (_internetState is InternetDisconnected) {
       emit(ItemsNoInternet());
       return;
     }
-    repo.fetchLostItems(token).then((lostItems) {
+    repo.fetchLostItems(token, refresh).then((lostItems) {
+      if (lostItems == null) {
+        emit(ItemsNoInternet());
+        return;
+      }
       if (lostItems.isEmpty) {
         print(lostItems);
         emit(ItemsNoItemsFound());
@@ -78,6 +90,26 @@ class ItemsCubit extends Cubit<ItemsState> {
       }
       emit(LostItemsFound(lostItems: lostItems));
     });
+  }
+
+  Future<void> filterItems(String token, bool foundOrLost, String category,
+      String governorate, bool refresh) async {
+    emit(ItemsInitial());
+    if (_internetState is InternetDisconnected) {
+      emit(ItemsNoInternet());
+      return;
+    }
+    List<Item>? filterdItemsFromRepo = await repo.filterItems(
+        token, foundOrLost, category, governorate, refresh);
+    if (filterdItemsFromRepo == null) {
+      emit(ItemsNoInternet());
+      return;
+    }
+    if (filterdItemsFromRepo.isEmpty) {
+      emit(ItemsNoItemsFound());
+      return;
+    }
+    emit(ItemsFilteredItems(filteredItems: filterdItemsFromRepo));
   }
 
   @override

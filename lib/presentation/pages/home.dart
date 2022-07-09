@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/presentation/pages/found_items_pages.dart';
 import 'package:lostsapp/presentation/pages/missing_items_page.dart';
-import '../../logic/cubit/items_cubit.dart';
 import '../widgets/bottombar.dart';
 import '../widgets/drawer.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return HomePageState();
@@ -17,7 +17,12 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  int _selectedindex = 1;
+  int _selectedindex = 0;
+  void onTapped(int index) {
+    setState(() {
+      _selectedindex = index;
+    });
+  }
 
   late TabController _tabController;
   @override
@@ -43,7 +48,9 @@ class HomePageState extends State<HomePage>
       child: Scaffold(
           drawer: buildDrawer(context),
           appBar: AppBar(
-            actions: [],
+            actions: [
+              IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list))
+            ],
             bottom: TabBar(
               controller: _tabController,
               labelColor: Colors.white,
@@ -60,18 +67,23 @@ class HomePageState extends State<HomePage>
             ),
             title: const Center(
               child: Text(
-                "Homd Page",
+                "Home",
               ),
             ),
           ),
           body: TabBarView(
               controller: _tabController,
               children: [MissingPage(), FoundItemsPage()]),
-          floatingActionButton: FAQ(),
           bottomNavigationBar: buildBottomNavigator(context, _selectedindex)),
     );
   }
+}
 
+
+
+
+
+/* 
   Widget FAQ() {
     return SpeedDial(
       animatedIcon: AnimatedIcons.menu_close,
@@ -128,5 +140,4 @@ class HomePageState extends State<HomePage>
         )
       ],
     );
-  }
-}
+  }*/

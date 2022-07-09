@@ -12,9 +12,9 @@ class ItemsNetworkService {
       response = await http.get(Uri.parse(ENDPOINT + "/items"),
           headers: {"Authorization": 'bare $token'});
     } catch (e) {
-      print("error");
+      //print("error");
       print(e);
-      return '';
+      return 'errorHttp';
     }
     if (response.statusCode == 200) {
       //print(response.body);

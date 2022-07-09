@@ -25,6 +25,13 @@ class LostItemsFound extends ItemsState {
   String toString() => 'LostItemsFound(lostItems: $lostItems)';
 }
 
+class ItemsFilteredItems extends ItemsState {
+  final List<Item> filteredItems;
+  ItemsFilteredItems({
+    required this.filteredItems,
+  });
+}
+
 class ItemsNoItemsFound extends ItemsState {}
 
 class ItemsNoInternet extends ItemsState {}

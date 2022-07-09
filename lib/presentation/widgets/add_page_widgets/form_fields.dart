@@ -59,7 +59,7 @@ void _showDatePicker(BuildContext context) {
   DatePicker.showDateTimePicker(context,
       showTitleActions: true,
       minTime: DateTime(2021, 3, 5),
-      maxTime: DateTime.now(),
+      maxTime: _nowDT,
       theme: DatePickerTheme(
           headerColor: Colors.amber,
           backgroundColor: Theme.of(context).accentColor,
@@ -69,7 +69,7 @@ void _showDatePicker(BuildContext context) {
       onConfirm: (date) {
     print('confirm ${date.toIso8601String()}');
     _formData["dateOfLoose"] = date.toIso8601String();
-    timeTextController.text = date.day.toString() +
+    _timeTextController.text = date.day.toString() +
         '/' +
         date.month.toString() +
         '/' +
@@ -81,13 +81,13 @@ void _showDatePicker(BuildContext context) {
   },
       currentTime: _formData["dateOfLoose"] != null
           ? DateTime.parse(_formData["dateOfLoose"])
-          : DateTime.now(),
+          : _nowDT,
       locale: LocaleType.en); //language of datetime picker
 }
 
 Widget _buildDateTimeTextFormField(BuildContext context) {
   return TextFormField(
-      controller: timeTextController,
+      controller: _timeTextController,
       readOnly: true,
       decoration: InputDecoration(
         filled: true,
@@ -120,14 +120,14 @@ void _showtypeAlertDialog(BuildContext context) {
           actions: [
             TextButton(
                 onPressed: () => {
-                      typeTextController.text = "Missing",
+                      _typeTextController.text = "Missing",
                       _formData["found"] = "0",
                       Navigator.pop(context)
                     },
                 child: const Text('missing it')),
             TextButton(
                 onPressed: () => {
-                      typeTextController.text = "Found",
+                      _typeTextController.text = "Found",
                       _formData["found"] = "1",
                       Navigator.pop(context)
                     },
@@ -139,7 +139,7 @@ void _showtypeAlertDialog(BuildContext context) {
 
 Widget _buildtypeOfItemTextFormField(BuildContext context) {
   return TextFormField(
-    controller: typeTextController,
+    controller: _typeTextController,
     decoration: InputDecoration(
       filled: true,
       fillColor: Colors.amber[150],

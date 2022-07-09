@@ -16,7 +16,7 @@ class ItemCard extends StatelessWidget {
           FadeInImage(
               height: 300,
               fit: BoxFit.cover,
-              placeholder: const AssetImage(
+              placeholder: AssetImage(
                 "placeholderpng.png",
               ),
               image: NetworkImage(

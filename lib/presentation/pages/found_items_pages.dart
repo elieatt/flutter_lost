@@ -12,35 +12,49 @@ class FoundItemsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double pageHeight = MediaQuery.of(context).size.height;
     _authState = context.watch<AuthCubit>().state;
     if (_authState is AuthLoginedIn) {
       _authLoginedInState = _authState as AuthLoginedIn;
       BlocProvider.of<ItemsCubit>(context)
-          .fetchFoundItems(_authLoginedInState.user.token);
+          .fetchFoundItems(_authLoginedInState.user.token, false);
     }
     /*  BlocProvider.of<ItemsCubit>(context)
         .fetchFoundItems(BlocProvider.of<AuthCubit>(context).user!.token); */
 
-    return BlocBuilder<ItemsCubit, ItemsState>(
-      builder: (context, state) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        BlocProvider.of<ItemsCubit>(context)
+            .fetchFoundItems(_authLoginedInState.user.token, true);
+      },
+      child: BlocBuilder<ItemsCubit, ItemsState>(builder: (context, state) {
         if (state is ItemsInitial) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (state is ItemsNoInternet) {
           return Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                Icon(Icons.signal_wifi_off, size: 50),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Check your internet connection and try again",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )
-              ]));
+              child: ListView(children: [
+            SizedBox(
+              height: pageHeight / 3.5,
+            ),
+            Center(
+              child: Icon(
+                Icons.wifi_off_rounded,
+                size: 50,
+                color: Theme.of(context).accentColor,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Center(
+              child: Text(
+                "Check your internet connection and try again",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            )
+          ]));
         } else if (state is FoundItemsFound) {
           return ListView.builder(
               itemCount: state.foundItems.length,
@@ -48,12 +62,20 @@ class FoundItemsPage extends StatelessWidget {
                 return ItemCard(state.foundItems[i]);
               });
         } else if (state is ItemsNoItemsFound) {
-          return const Center(
-            child: Text("NO ITEMS FOUND"),
+          return Center(
+            child: ListView(children: [
+              SizedBox(height: pageHeight / 2),
+              const Center(child: Text("NO ITEMS FOUND"))
+            ]),
           );
         }
-        return const Text("error");
-      },
+        return ListView(children: [
+          SizedBox(
+            height: pageHeight / 2,
+          ),
+          const Center(child: Text("error"))
+        ]);
+      }),
     );
   }
 }

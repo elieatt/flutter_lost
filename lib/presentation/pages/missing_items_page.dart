@@ -19,41 +19,65 @@ class _MissingPageState extends State<MissingPage> {
 
   @override
   Widget build(BuildContext context) {
+    double pageHeight = MediaQuery.of(context).size.height;
     BlocProvider.of<ItemsCubit>(context)
-        .fetchLostItems(BlocProvider.of<AuthCubit>(context).user!.token);
+        .fetchLostItems(BlocProvider.of<AuthCubit>(context).user!.token, false);
     print('built');
 
-    return BlocBuilder<ItemsCubit, ItemsState>(builder: (context, state) {
-      if (state is ItemsInitial) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      } else if (state is ItemsNoInternet) {
-        return Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-              Icon(Icons.signal_wifi_off, size: 50),
-              SizedBox(
-                height: 20,
+    return RefreshIndicator(
+      onRefresh: () async {
+        BlocProvider.of<ItemsCubit>(context).fetchLostItems(
+            BlocProvider.of<AuthCubit>(context).user!.token, true);
+      },
+      child: BlocBuilder<ItemsCubit, ItemsState>(builder: (context, state) {
+        if (state is ItemsInitial) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is ItemsNoInternet) {
+          return Center(
+              child: ListView(children: [
+            SizedBox(
+              height: pageHeight / 3.5,
+            ),
+            Center(
+              child: Icon(
+                Icons.wifi_off_rounded,
+                size: 50,
+                color: Theme.of(context).accentColor,
               ),
-              Text(
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Center(
+              child: Text(
                 "Check your internet connection and try again",
                 style: TextStyle(fontWeight: FontWeight.bold),
-              )
-            ]));
-      } else if (state is LostItemsFound) {
-        return ListView.builder(
-            itemCount: state.lostItems.length,
-            itemBuilder: (BuildContext context, int i) {
-              return ItemCard(state.lostItems[i]);
-            });
-      } else if (state is ItemsNoItemsFound) {
-        return const Center(
-          child: Text("NO ITEMS FOUND"),
-        );
-      }
-      return const Text("error");
-    });
+              ),
+            )
+          ]));
+        } else if (state is LostItemsFound) {
+          return ListView.builder(
+              itemCount: state.lostItems.length,
+              itemBuilder: (BuildContext context, int i) {
+                return ItemCard(state.lostItems[i]);
+              });
+        } else if (state is ItemsNoItemsFound) {
+          return Center(
+            child: ListView(children: [
+              SizedBox(height: pageHeight / 2),
+              const Center(child: Text("NO ITEMS FOUND"))
+            ]),
+          );
+        }
+        return ListView(children: [
+          SizedBox(
+            height: pageHeight / 2,
+          ),
+          const Center(child: Text("error"))
+        ]);
+      }),
+    );
   }
 }

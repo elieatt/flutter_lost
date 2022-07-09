@@ -36,7 +36,8 @@ class AddnUpdateRepository {
             "description": values["description"] as String,
             "found": values["found"] as String,
             "governorate": values["governorate"] as String,
-            "category": values["category"] as String
+            "category": values["category"] as String,
+            'dateOfLoose': values["dateOfLoose"] as String,
           }),
         );
       } catch (e) {
@@ -62,9 +63,9 @@ class AddnUpdateRepository {
           'title': values["title"] as String,
           'description': values["description"] as String,
           'found': values["found"] as String,
+          'dateOfLoose': values["dateOfLoose"] as String,
           'governorate': values["governorate"] as String,
-          'category': values["category"] as String,
-          'dateOfLoose': values["dateOfLoose"] as String
+          'category': values["category"] as String
         });
         imageUploadRequest.files.add(await http.MultipartFile.fromPath(
             'itemImage', f.path,

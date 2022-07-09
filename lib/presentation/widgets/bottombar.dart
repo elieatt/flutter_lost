@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 BottomNavigationBar buildBottomNavigator(
     BuildContext context, int _selectedindex) {
   return BottomNavigationBar(
+    type: BottomNavigationBarType.fixed,
     currentIndex: _selectedindex,
     items: [
       BottomNavigationBarItem(

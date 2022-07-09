@@ -27,8 +27,9 @@ part '../widgets/add_page_widgets/form_fields.dart';
 
 Map<String, dynamic> _formData = {};
 
-TextEditingController timeTextController = TextEditingController();
-TextEditingController typeTextController = TextEditingController();
+TextEditingController _timeTextController = TextEditingController();
+TextEditingController _typeTextController = TextEditingController();
+DateTime _nowDT = DateTime.now();
 
 class AddPage extends StatefulWidget {
   const AddPage({Key? key}) : super(key: key);
@@ -42,15 +43,17 @@ class AddPage extends StatefulWidget {
 class AddPageState extends State<AddPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   int _selectedindex = 2;
-  void _navigator(int index) {
+  /*  void _navigator(int index) {
     setState(() {
       _selectedindex = index;
     });
-  }
+  } */
 
   @override
   void dispose() {
-    _formData.clear();
+    _typeTextController.clear();
+    _timeTextController.clear();
+
     super.dispose();
   }
 
