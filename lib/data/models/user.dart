@@ -8,13 +8,15 @@ class User {
   String email;
 
   String token;
+  String userName;
 
   String phoneNumber;
   User(
       {required this.id,
       required this.email,
       required this.token,
-      required this.phoneNumber});
+      required this.phoneNumber,
+      required this.userName});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -27,11 +29,11 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'] as String,
-      email: map['email'] as String,
-      token: map['token'] as String,
-      phoneNumber: map['phoneNumber'] as String,
-    );
+        id: map['id'] as String,
+        email: map['email'] as String,
+        token: map['token'] as String,
+        phoneNumber: map['phoneNumber'] as String,
+        userName: map["userName"] as String);
   }
 
   String toJson() => json.encode(toMap());

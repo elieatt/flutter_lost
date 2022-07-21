@@ -18,11 +18,12 @@ class AuthCubit extends Cubit<AuthState> {
     startupLogin();
   }
 
-  Future signUP(String email, String password, String phoneNumber) async {
+  Future signUP(String email, String password, String phoneNumber,
+      String userName) async {
     emit(AuthProgress());
 
     Map<String, dynamic>? response =
-        await repo.signup(email, password, phoneNumber);
+        await repo.signup(email, password, phoneNumber, userName);
 
     if (response == null || response["message"] != "User was created") {
       emit(AuthFailed(response == null

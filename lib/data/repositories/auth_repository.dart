@@ -7,15 +7,16 @@ import 'package:lostsapp/constants/env.dart';
 import '../models/user.dart';
 
 class AuthRepository {
-  Future<Map<String, dynamic>?> signup(
-      String email, String password, String phoneNumber) async {
+  Future<Map<String, dynamic>?> signup(String email, String password,
+      String phoneNumber, String userName) async {
     http.Response response;
     Map<String, dynamic> reqBody;
 
     reqBody = {
       "email": email,
       "password": password,
-      "phoneNumber": phoneNumber
+      "phoneNumber": phoneNumber,
+      "userName": userName
     };
 
     try {
@@ -27,7 +28,7 @@ class AuthRepository {
       return null;
     }
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print(response.body);
+      //print(response.body);
 
       Map<String, dynamic> parsedBody = jsonDecode(response.body);
 
@@ -68,6 +69,7 @@ class AuthRepository {
       await prefs.setString("email", user.email);
       await prefs.setString("phoneNumber", user.phoneNumber);
       await prefs.setString("expire", timeOfExpire);
+      await prefs.setString("userName", user.userName);
     }
     return (parsedResult);
   }
@@ -76,18 +78,27 @@ class AuthRepository {
     //!
 
     final prefs = await SharedPreferences.getInstance();
-    String? id, token, email, expire, phoneNumber;
+    String? id, token, email, expire, phoneNumber, userName;
 
     id = prefs.getString("id");
     token = prefs.getString("token");
     email = prefs.getString("email");
     expire = prefs.getString("expire");
     phoneNumber = prefs.getString("phoneNumber");
+    userName = prefs.getString("userName");
 
-    if (id != null && token != null && email != null && phoneNumber != null) {
+    if (id != null &&
+        token != null &&
+        email != null &&
+        phoneNumber != null &&
+        userName != null) {
       return {
-        "user":
-            User(email: email, id: id, token: token, phoneNumber: phoneNumber),
+        "user": User(
+            email: email,
+            id: id,
+            token: token,
+            phoneNumber: phoneNumber,
+            userName: userName),
         "expire": expire
       };
     }
@@ -102,5 +113,6 @@ class AuthRepository {
     await prefs.remove('token');
     await prefs.remove("expire");
     await prefs.remove("phoneNumber");
+    await prefs.remove("userName");
   }
 }

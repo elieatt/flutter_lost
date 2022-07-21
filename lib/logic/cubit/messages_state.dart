@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'messages_cubit.dart';
 
 @immutable
@@ -8,15 +9,24 @@ class MessagesProgress extends MessagesState {}
 class MessagesSentMessagesFound extends MessagesState {
   final List<Message> sentMessages;
 
-  MessagesSentMessagesFound(this.sentMessages);
+  MessagesSentMessagesFound({required this.sentMessages});
 }
 
 class MessagesrecivedMessagesFound extends MessagesState {
   final List<Message> recivedMessages;
+  int unReadMessagesCount;
 
-  MessagesrecivedMessagesFound(this.recivedMessages);
+  MessagesrecivedMessagesFound({
+    required this.recivedMessages,
+    required this.unReadMessagesCount,
+  });
+
+  @override
+  String toString() => ' unReadMessagesCount: $unReadMessagesCount)';
 }
 
-class MessagesNoMessagesFound extends MessagesState {}
+class MessagesNoRecivedMessagesFound extends MessagesState {}
+
+class MessagesNoSentMessagesFound extends MessagesState {}
 
 class MessagesNoInternet extends MessagesState {}

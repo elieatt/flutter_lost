@@ -46,14 +46,14 @@ IconData toIcon(String str) {
     case "Pet":
       return FontAwesomeIcons.dog;
 
-    case "Documents":
+    case "Documnets":
       return FontAwesomeIcons.file;
 
     case "Computer":
       return FontAwesomeIcons.computer;
 
     case "Phone":
-      return FontAwesomeIcons.phone;
+      return FontAwesomeIcons.mobileScreen;
 
     case "Electronics":
       return FontAwesomeIcons.boltLightning;

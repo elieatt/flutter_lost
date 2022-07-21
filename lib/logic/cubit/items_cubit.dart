@@ -2,7 +2,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:lostsapp/constants/enums.dart';
+
 import 'package:meta/meta.dart';
 
 import 'package:lostsapp/logic/cubit/internet_cubit.dart';
@@ -120,7 +120,7 @@ class ItemsCubit extends Cubit<ItemsState> {
 
   @override
   void onChange(Change<ItemsState> change) {
-    print(change);
+    //print(change);
     super.onChange(change);
   }
 }

@@ -16,7 +16,7 @@ class AuthNetworkService {
       print(e);
       return null;
     }
-    print(response.body);
+    //print(response.body);
     Map<String, dynamic> parsedBody = jsonDecode(response.body);
     if (response.statusCode == 201) {
       return parsedBody;

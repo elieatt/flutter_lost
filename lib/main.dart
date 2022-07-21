@@ -2,12 +2,11 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lostsapp/data/repositories/post_and_update_network_repository.dart';
 
 import 'package:lostsapp/data/repositories/auth_repository.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/internet_cubit.dart';
-import 'package:lostsapp/logic/cubit/post_item_cubit.dart';
+import 'package:lostsapp/logic/cubit/messages_cubit.dart';
 import 'package:lostsapp/presentation/router/app_router.dart';
 
 import 'data/network_services/items_netwroks_service.dart';
@@ -15,10 +14,9 @@ import 'data/repositories/items_repository.dart';
 import 'logic/cubit/items_cubit.dart';
 
 void main() {
-  final PostItemCubit pic = PostItemCubit(AddnUpdateRepository());
   final authRepo = AuthRepository();
   final itemsRepo = ItemsRepository(ItemsNetworkService());
-  AppRouter appRouter = AppRouter(pic);
+  AppRouter appRouter = AppRouter();
   runApp(MyApp(
     appRouter: appRouter,
     itemsRepo: itemsRepo,
@@ -49,6 +47,7 @@ class MyApp extends StatelessWidget {
                   InternetCubit(connectivity: Connectivity()),
                   itemsRepo,
                 )),
+        BlocProvider(create: (context) => MessagesCubit())
       ],
       child: MaterialApp(
         theme: ThemeData(

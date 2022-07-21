@@ -72,7 +72,7 @@ class AddnUpdateRepository {
             contentType: MediaType(mimeTypeData[0], mimeTypeData[1])));
         http.StreamedResponse rr = await imageUploadRequest.send();
         if (rr.statusCode == 200 || rr.statusCode == 201) {
-          print(await rr.stream.bytesToString());
+          //print(await rr.stream.bytesToString());
           return "success";
         } else {
           print(rr.reasonPhrase);

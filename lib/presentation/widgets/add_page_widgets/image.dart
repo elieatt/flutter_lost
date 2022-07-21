@@ -22,7 +22,7 @@ class ImageFieldState extends State<ImageField> {
     ImageSource source,
   ) async {
     XFile? a;
-    a = await _picker.pickImage(source: source, maxWidth: 720);
+    a = await _picker.pickImage(source: source, maxWidth: 1280);
     widget.selectImage(a!);
     setState(() {
       imageFile = a;

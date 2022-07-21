@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lostsapp/data/repositories/post_and_update_network_repository.dart';
+import 'package:lostsapp/data/models/item.dart';
+import 'package:lostsapp/data/models/message.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
-import 'package:lostsapp/logic/cubit/post_item_cubit.dart';
-import 'package:lostsapp/presentation/pages/add_page.dart';
+import 'package:lostsapp/logic/cubit/delete_message_cubit.dart';
+import 'package:lostsapp/logic/cubit/messages_cubit.dart';
+import 'package:lostsapp/logic/cubit/send_message_cubit.dart';
 import 'package:lostsapp/presentation/pages/auth_page.dart';
-import 'package:lostsapp/presentation/router/custom_page_route.dart';
+import 'package:lostsapp/presentation/pages/single_item_page.dart';
+import 'package:lostsapp/presentation/pages/single_message_page.dart';
 
 import '../pages/home.dart';
 
 class AppRouter {
-  final PostItemCubit PIC;
-
-  AppRouter(this.PIC);
   Route? onGeneratedRoutes(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case '/':
@@ -20,23 +20,42 @@ class AppRouter {
           /*return AuthPage();*/
           return BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
             if (state is AuthLoginedIn) {
-              return HomePage();
+              return const HomePage();
             } else {
               return AuthPage();
             }
           }));
         });
-      case '/home':
-        return MyCustomRoute(builder: (context) {
+      case '/itemView':
+        return MaterialPageRoute(builder: (context) {
           return BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
             if (state is AuthLoginedIn) {
-              return HomePage();
+              return BlocProvider<SendMessageCubit>(
+                create: (context) => SendMessageCubit(),
+                child: SingleItemPage(item: routeSettings.arguments as Item),
+              );
+            } else {
+              return AuthPage();
+            }
+          }));
+        });
+
+      case '/messageView':
+        return MaterialPageRoute(builder: (context) {
+          return BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
+            if (state is AuthLoginedIn) {
+              return BlocProvider<DeleteMessageCubit>(
+                create: (context) => DeleteMessageCubit(),
+                child: SingleMessagePage(
+                    message: routeSettings.arguments as Message),
+              );
             } else {
               return AuthPage();
             }
           }));
         });
     }
+
     return null;
   }
 }

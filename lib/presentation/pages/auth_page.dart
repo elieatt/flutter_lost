@@ -19,6 +19,7 @@ class AuthPageState extends State<AuthPage> {
   late String _email;
   late String _password;
   late String _phoneNumber;
+  late String _userName;
   bool _acceptterms = false;
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
@@ -172,6 +173,37 @@ class AuthPageState extends State<AuthPage> {
         });
   }
 
+  Widget _buildUserNameTextFromField() {
+    return TextFormField(
+
+        //controller: _phoneNumberController,
+
+        decoration: InputDecoration(
+          labelText: 'Enter your Name',
+          labelStyle: const TextStyle(fontSize: 20, color: Colors.black),
+          filled: true,
+          icon: const Icon(
+            Icons.person,
+            size: 40,
+            color: Colors.blue,
+          ),
+          fillColor: Colors.amber[100],
+          helperText: 'Name must be +6 characters',
+          helperStyle: const TextStyle(fontSize: 15),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(width: 2, color: Colors.blue),
+          ),
+        ),
+        validator: (String? value) {
+          if (value == null || value.length < 6) {
+            return 'Please Enter a valid Name';
+          }
+        },
+        onSaved: (String? value) {
+          _userName = value!;
+        });
+  }
+
   Widget _buildAcceptSwitch() {
     return SwitchListTile(
       activeColor: Colors.blue,
@@ -207,7 +239,7 @@ class AuthPageState extends State<AuthPage> {
     _formkey.currentState!.save();
     if (_mode == AuthMode.signup) {
       BlocProvider.of<AuthCubit>(context)
-          .signUP(_email, _password, _phoneNumber);
+          .signUP(_email, _password, _phoneNumber, _userName);
     } else {
       BlocProvider.of<AuthCubit>(context).login(_email, _password);
     }
@@ -222,15 +254,16 @@ class AuthPageState extends State<AuthPage> {
       listener: (context, state) {
         if (state is AuthSignedUp) {
           buildAwrsomeDia(
-                  context, "Succeed", "You signed up successfully", "OK")
+                  context, "Succeed", "You signed up successfully", "OK",
+                  type: DialogType.SUCCES)
               .show();
           setState(() {
             _mode = AuthMode.login;
           });
         } else if (state is AuthFailed) {
-          buildAwrsomeDia(context, "Auth Failed", state.message, "OK").show();
-        } else if (state is AuthLoginedIn) {
-          Navigator.of(context).pushReplacementNamed("/home");
+          buildAwrsomeDia(context, "Auth Failed", state.message, "OK",
+                  type: DialogType.WARNING)
+              .show();
         }
       },
       child: Scaffold(
@@ -240,7 +273,7 @@ class AuthPageState extends State<AuthPage> {
         ),
         body: Container(
           padding: const EdgeInsets.all(10.5),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               /* image: _buildBackgroundImage(), */
               ),
           child: Center(
@@ -268,6 +301,10 @@ class AuthPageState extends State<AuthPage> {
                           : Column(
                               children: [
                                 _buildConfirmPasswordTextField(),
+                                const SizedBox(
+                                  height: 30.0,
+                                ),
+                                _buildUserNameTextFromField(),
                                 const SizedBox(
                                   height: 30.0,
                                 ),

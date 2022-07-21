@@ -25,46 +25,58 @@ _showDialogAlert(context) {
       }).show();
 }
 
-Widget buildDrawer(BuildContext context) {
+Widget buildDrawer(BuildContext context, void Function(int) onTapped) {
   return Drawer(
     child: Column(children: [
       AppBar(
-        leading: const Icon(
-          Icons.settings,
-          color: Colors.black,
-        ),
+        toolbarHeight: 100,
         automaticallyImplyLeading: false,
-        title: const Text('Options'),
-      ),
-      ListTile(
-        leading: const Icon(Icons.account_circle),
-        title: const Text('My Profile'),
-        onTap: () {
-          Navigator.pushNamed(context, '/profile');
-        },
-      ),
-      const Divider(),
-      ListTile(
-        leading: const Icon(Icons.add),
-        title: const Text('Post What you Lost or Found'),
-        onTap: () {
-          Navigator.pushReplacementNamed(context, '/add');
-        },
-      ),
-      const Divider(),
-      ListTile(
-        leading: const Icon(Icons.question_answer),
-        title: const Text('Confirm requests'),
-        onTap: () {
-          Navigator.pushNamed(context, '/myConfirms');
-        },
+        title: Row(children: [
+          const Icon(
+            Icons.person,
+            size: 50,
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              context.read<AuthCubit>().user!.userName,
+              textAlign: TextAlign.left,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text("0" + context.read<AuthCubit>().user!.phoneNumber.substring(4),
+                textAlign: TextAlign.left)
+          ])
+        ]),
       ),
       const Divider(),
       ListTile(
         leading: const Icon(Icons.home),
         title: const Text('Home'),
         onTap: () {
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pop(context);
+          onTapped(0);
+        },
+      ),
+      const Divider(),
+      ListTile(
+        leading: const Icon(Icons.add),
+        title: const Text('Post an item'),
+        onTap: () {
+          Navigator.pop(context);
+          onTapped(1);
+        },
+      ),
+      const Divider(),
+      ListTile(
+        leading: const Icon(Icons.question_answer),
+        title: const Text('Messages'),
+        onTap: () {
+          Navigator.pop(context);
+          onTapped(2);
         },
       ),
       const Divider(),

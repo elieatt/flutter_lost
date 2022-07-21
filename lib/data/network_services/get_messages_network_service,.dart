@@ -1,4 +1,6 @@
 // ignore: file_names
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:lostsapp/constants/env.dart';
 
@@ -43,5 +45,24 @@ class GetMessagesNetworkService {
       return response.body;
     }
     return '';
+  }
+
+  Future<String> readAmessage(String token, String messageId) async {
+    http.Response response;
+    try {
+      response = await http.put(
+          Uri.parse(ENDPOINT + '/messages//readAmessage/$messageId'),
+          headers: {
+            "Authorization": 'bare $token',
+          });
+    } catch (e) {
+      print('error from read message' + e.toString());
+      return 'httpError';
+    }
+
+    if (response.statusCode == 201) {
+      return '';
+    }
+    return "error";
   }
 }

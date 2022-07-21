@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lostsapp/logic/cubit/auth_cubit.dart';
+import 'package:lostsapp/logic/cubit/messages_cubit.dart';
+
 import 'package:lostsapp/presentation/pages/found_items_pages.dart';
+import 'package:lostsapp/presentation/pages/messages_page.dart';
 import 'package:lostsapp/presentation/pages/missing_items_page.dart';
-import 'package:lostsapp/presentation/widgets/app_bar.dart';
+import 'package:lostsapp/presentation/widgets/home_page_widgets/app_bar.dart';
+
 import '../../data/repositories/post_and_update_network_repository.dart';
 import '../../logic/cubit/post_item_cubit.dart';
-import '../widgets/bottombar.dart';
-import '../widgets/drawer.dart';
+import '../widgets/home_page_widgets/bottombar.dart';
+import '../widgets/home_page_widgets/drawer.dart';
+
 import 'add_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,12 +24,13 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   int _selectedindex = 0;
-  late TabController _homePageTabController;
 
-  final PageController _pageController = PageController();
+  late TabController _homePageTabController;
+  late TabController _messagesPageTabController;
+  late PageController _pageController;
+
   void onTapped(int index) {
     setState(() {
       _selectedindex = index;
@@ -34,26 +41,41 @@ class HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
+    _pageController = PageController();
     _homePageTabController = TabController(vsync: this, length: 2);
+    _messagesPageTabController = TabController(
+      vsync: this,
+      length: 2,
+    );
+    BlocProvider.of<MessagesCubit>(context).getRecivedMessages(
+        BlocProvider.of<AuthCubit>(context).user!.token,
+        BlocProvider.of<AuthCubit>(context).user!.id,
+        true);
   }
 
   @override
   void dispose() {
+    _pageController.dispose();
     _homePageTabController.dispose();
+    _messagesPageTabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: buildDrawer(context),
-      appBar: buildAppBar(_selectedindex, _homePageTabController),
+      drawer: buildDrawer(context, onTapped),
+      appBar: buildAppBar(
+          _selectedindex, _homePageTabController, _messagesPageTabController),
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: [
           TabBarView(
-              controller: _homePageTabController,
-              children: [const MissingPage(), FoundItemsPage()]),
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _homePageTabController,
+            children: [const MissingPage(), FoundItemsPage()],
+          ),
           BlocProvider<PostItemCubit>(
             lazy: false,
             create: (context) => PostItemCubit(AddnUpdateRepository()),
@@ -61,6 +83,10 @@ class HomePageState extends State<HomePage>
               onTapped: onTapped,
             ),
           ),
+          TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _messagesPageTabController,
+              children: const [MessagesPage(index: 0), MessagesPage(index: 1)]),
         ],
       ),
       bottomNavigationBar:
@@ -68,66 +94,3 @@ class HomePageState extends State<HomePage>
     );
   }
 }
-
-
-
-
-
-/* 
-  Widget FAQ() {
-    return SpeedDial(
-      animatedIcon: AnimatedIcons.menu_close,
-      backgroundColor: Colors.amber,
-      overlayColor: Colors.black,
-      overlayOpacity: 0.4,
-      children: [
-        SpeedDialChild(
-          label: "Favorite",
-          child: IconButton(
-            icon: const Icon(
-              Icons.favorite_border,
-              color: Colors.red,
-            ),
-            onPressed: () {
-              //show favorited
-            },
-          ),
-        ),
-        SpeedDialChild(
-          label: "Lost",
-          child: IconButton(
-            icon: const Icon(
-              Icons.search_off,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              //show only losts
-            },
-          ),
-        ),
-        SpeedDialChild(
-          label: "Fond",
-          child: IconButton(
-            icon: const Icon(
-              Icons.search_outlined,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              //show only founds
-            },
-          ),
-        ),
-        SpeedDialChild(
-          label: "Home Page",
-          child: IconButton(
-            icon: const Icon(
-              Icons.home_rounded,
-            ),
-            onPressed: () {
-              //show both found and losts
-            },
-          ),
-        )
-      ],
-    );
-  }*/

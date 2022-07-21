@@ -31,7 +31,9 @@ class Item {
         governorate: d["governorate"].toString(),
         imageUrl: d["imageUrl"].toString(),
         user: d["user"]!,
-        found: d["found"]);
+        found: d["found"].runtimeType == String
+            ? int.parse(d["found"])
+            : d["found"]);
   }
 
   /*  @override
