@@ -7,9 +7,9 @@ class DateTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double pageWidth = MediaQuery.of(context).size.width;
     return Container(
-      width: MediaQuery.of(context).size.width -
-          MediaQuery.of(context).size.width / 3,
+      width: pageWidth < 736 ? pageWidth - pageWidth / 2.5 : pageWidth / 3,
       padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey, width: 1.0),

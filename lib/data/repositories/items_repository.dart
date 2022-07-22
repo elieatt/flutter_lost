@@ -11,6 +11,7 @@ class ItemsRepository {
   final List<Item> _foundItemsArray = [];
   final List<Item> _lostItemsArray = [];
   final List<Item> _filteredItemsArray = [];
+  final List<Item> _userItmes = [];
 
   ItemsRepository(this.service);
 
@@ -19,6 +20,7 @@ class ItemsRepository {
     _foundItemsArray.length = 0;
     _lostItemsArray.length = 0;
     _filteredItemsArray.length = 0;
+    _userItmes.length = 0;
   }
 
   Future<List<Item>?> fetchAllItems(String token) async {
@@ -88,5 +90,18 @@ class ItemsRepository {
             element.governorate == governorate);
       }).toList();
     }
+  }
+
+  Future<List<Item>?> fetchUserItems(
+      String token, String userId, bool refresh) async {
+    if (refresh) {
+      var result = await fetchAllItems(token);
+      if (result == null) {
+        return null;
+      }
+    }
+    return _allItemsArray.where((element) {
+      return element.user["_id"] == userId;
+    }).toList();
   }
 }

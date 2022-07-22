@@ -34,7 +34,6 @@ class ItemsCubit extends Cubit<ItemsState> {
   void fetchItems(String token) {
     emit(ItemsInitial());
     if (_internetState is InternetDisconnected) {
-      print("emitted no internet");
       emit(ItemsNoInternet());
       return;
     }
@@ -47,7 +46,7 @@ class ItemsCubit extends Cubit<ItemsState> {
         emit(ItemsNoItemsFound());
         return;
       }
-      print(items);
+
       emit(ItemsFound(items: items));
     });
   }
@@ -84,7 +83,6 @@ class ItemsCubit extends Cubit<ItemsState> {
         return;
       }
       if (lostItems.isEmpty) {
-        print(lostItems);
         emit(ItemsNoItemsFound());
         return;
       }
@@ -110,6 +108,27 @@ class ItemsCubit extends Cubit<ItemsState> {
       return;
     }
     emit(ItemsFilteredItems(filteredItems: filterdItemsFromRepo));
+    return;
+  }
+
+  Future<void> getUserItem(String token, String userId, bool refresh) async {
+    emit(ItemsInitial());
+    if (_internetState is InternetDisconnected) {
+      emit(ItemsNoInternet());
+      return;
+    }
+    List<Item>? userItemsFromRepo =
+        await repo.fetchUserItems(token, userId, refresh);
+    if (userItemsFromRepo == null) {
+      emit(ItemsNoInternet());
+      return;
+    }
+    if (userItemsFromRepo.isEmpty) {
+      emit(ItemsNoItemsFound());
+      return;
+    }
+    emit(ItemsUserItemsFound(userItems: userItemsFromRepo));
+    return;
   }
 
   @override
@@ -120,7 +139,6 @@ class ItemsCubit extends Cubit<ItemsState> {
 
   @override
   void onChange(Change<ItemsState> change) {
-    //print(change);
     super.onChange(change);
   }
 }

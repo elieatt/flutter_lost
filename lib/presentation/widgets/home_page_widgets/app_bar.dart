@@ -14,12 +14,12 @@ AppBar buildAppBar(int index, TabController? htc, TabController? mtc) {
         tabs: const [
           Tab(
             height: 50,
-            text: 'Missing',
+            text: 'Missing ',
             icon: Icon(Icons.search_off),
           ),
           Tab(
             height: 55,
-            text: 'Found things',
+            text: 'Found ',
             icon: Icon(Icons.search_outlined),
           )
         ],
@@ -32,7 +32,7 @@ AppBar buildAppBar(int index, TabController? htc, TabController? mtc) {
     );
   } else if (index == 1) {
     return AppBar(
-      title: Text("Add Item"),
+      title: const Center(child: Text("Post an Item")),
     );
   }
   return AppBar(

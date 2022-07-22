@@ -48,11 +48,18 @@ dependencies:
   pinch_zoom_image_last: ^0.4.1
   cached_network_image: ^3.1.0+1
   
+  
 
 dev_dependencies:
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
+  flutter_native_splash: ^1.2.4
+
+
+flutter_native_splash:
+  color: "ffffff"
+  image: assets/splash.png    
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

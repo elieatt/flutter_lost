@@ -9,7 +9,9 @@ import 'package:lostsapp/logic/cubit/send_message_cubit.dart';
 import 'package:lostsapp/presentation/pages/auth_page.dart';
 import 'package:lostsapp/presentation/pages/single_item_page.dart';
 import 'package:lostsapp/presentation/pages/single_message_page.dart';
+import 'package:lostsapp/presentation/pages/user_items_page.dart';
 
+import '../../logic/cubit/delete_item_cubit.dart';
 import '../pages/home.dart';
 
 class AppRouter {
@@ -48,6 +50,20 @@ class AppRouter {
                 create: (context) => DeleteMessageCubit(),
                 child: SingleMessagePage(
                     message: routeSettings.arguments as Message),
+              );
+            } else {
+              return AuthPage();
+            }
+          }));
+        });
+
+      case '/myItems':
+        return MaterialPageRoute(builder: (context) {
+          return BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
+            if (state is AuthLoginedIn) {
+              return BlocProvider<DeleteItemCubit>(
+                create: (context) => DeleteItemCubit(),
+                child: UserItemsPage(),
               );
             } else {
               return AuthPage();

@@ -32,6 +32,13 @@ class ItemsFilteredItems extends ItemsState {
   });
 }
 
+class ItemsUserItemsFound extends ItemsState {
+  final List<Item> userItems;
+  ItemsUserItemsFound({
+    required this.userItems,
+  });
+}
+
 class ItemsNoItemsFound extends ItemsState {}
 
 class ItemsNoInternet extends ItemsState {}

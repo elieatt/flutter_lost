@@ -9,7 +9,6 @@ import 'package:lostsapp/presentation/widgets/card_widgets/date_tag.dart';
 import 'package:lostsapp/presentation/widgets/card_widgets/location_and_category_tag.dart';
 import 'package:lostsapp/presentation/widgets/card_widgets/userName_tag.dart';
 import 'package:lostsapp/presentation/widgets/item_image.dart';
-import 'package:lostsapp/presentation/widgets/single_message_page_widgets/delete_button.dart';
 
 import '../../data/models/item.dart';
 
@@ -40,6 +39,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
 
   Future<String?> openDialog(BuildContext context) async {
     return await showDialog<String>(
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           return AlertDialog(
@@ -51,6 +51,9 @@ class _SingleItemPageState extends State<SingleItemPage> {
               minLines: 2,
             ),
             actions: <Widget>[
+              TextButton(
+                  onPressed: (() => Navigator.of(context).pop("00")),
+                  child: const Text("Cancel")),
               Container(
                 width: 40,
                 alignment: Alignment.centerLeft,
@@ -104,7 +107,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
             /* crossAxisAlignment: CrossAxisAlignment.center, */
             children: [
               Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: UserNameTag(name: widget.item.user["userName"]),
               ),
               Container(
@@ -120,11 +123,25 @@ class _SingleItemPageState extends State<SingleItemPage> {
               Container(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: DateTag(widget.item.dateofloss)),
+              const Divider(
+                color: Colors.amber,
+              ),
+              Container(
+                margin: EdgeInsets.all(15),
+                child: const Text(
+                  "Description",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber),
+                ),
+              ),
               UnconstrainedBox(
                 child: Container(
                   width: pageWidth > 720 ? pageWidth / 3 : pageWidth - 100,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                  margin: const EdgeInsets.only(
+                      right: 20, left: 20, top: 5, bottom: 20),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
@@ -137,12 +154,16 @@ class _SingleItemPageState extends State<SingleItemPage> {
                   ),
                 ),
               ),
+              const Divider(
+                color: Colors.amber,
+              ),
               BlocProvider.of<AuthCubit>(context).user!.id ==
                       widget.item.user["_id"]
                   ? Container()
                   : UnconstrainedBox(
                       child: Container(
-                        width: pageWidth - 100,
+                        width:
+                            pageWidth < 763 ? pageWidth - 100 : pageWidth / 3,
                         padding: const EdgeInsets.symmetric(
                             vertical: 20, horizontal: 60),
                         child: BlocBuilder<SendMessageCubit, SendMessageState>(
@@ -155,7 +176,9 @@ class _SingleItemPageState extends State<SingleItemPage> {
                               return ElevatedButton(
                                 onPressed: () async {
                                   final messageText = await openDialog(context);
-                                  if (messageText == null ||
+                                  if (messageText == "00") {
+                                    return;
+                                  } else if (messageText == null ||
                                       messageText.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(

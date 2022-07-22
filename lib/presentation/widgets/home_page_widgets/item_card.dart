@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lostsapp/presentation/widgets/item_image.dart';
 
-import '../../data/models/item.dart';
+import '../../../data/models/item.dart';
 
-import 'card_widgets/date_tag.dart';
-import 'card_widgets/location_and_category_tag.dart';
+import '../card_widgets/date_tag.dart';
+import '../card_widgets/location_and_category_tag.dart';
 
-import 'card_widgets/status_tag.dart';
-import 'card_widgets/title.dart';
-import 'card_widgets/userName_tag.dart';
+import '../card_widgets/status_tag.dart';
+import '../card_widgets/title.dart';
+import '../card_widgets/userName_tag.dart';
 
 class ItemCard extends StatelessWidget {
   final Item item;

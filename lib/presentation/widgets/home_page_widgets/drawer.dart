@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
+import 'package:lostsapp/logic/cubit/items_cubit.dart';
+import 'package:lostsapp/logic/cubit/messages_cubit.dart';
 
 _showDialogAlert(context) {
   AwesomeDialog(
@@ -25,7 +27,8 @@ _showDialogAlert(context) {
       }).show();
 }
 
-Widget buildDrawer(BuildContext context, void Function(int) onTapped) {
+Widget buildDrawer(BuildContext context, void Function(int) onTapped,
+    TabController htb, TabController mtb) {
   return Drawer(
     child: Column(children: [
       AppBar(
@@ -77,6 +80,32 @@ Widget buildDrawer(BuildContext context, void Function(int) onTapped) {
         onTap: () {
           Navigator.pop(context);
           onTapped(2);
+        },
+      ),
+      const Divider(),
+      ListTile(
+        leading: const Icon(Icons.contact_page),
+        title: const Text('My items'),
+        onTap: () async {
+          final token = context.read<AuthCubit>().user!.token;
+          final userId = context.read<AuthCubit>().user!.id;
+          Navigator.pop(context);
+          await Navigator.of(context).pushNamed("/myItems");
+          //refreshing items and messages
+          if (htb.index == 0) {
+            context.read<ItemsCubit>().fetchLostItems(token, true);
+          } else {
+            context.read<ItemsCubit>().fetchFoundItems(token, true);
+          }
+          await context
+              .read<MessagesCubit>()
+              .getRecivedMessages(token, userId, true);
+          if (mtb.index == 1) {
+            await context.read<MessagesCubit>().getSentMessages(
+                  token,
+                  userId,
+                );
+          }
         },
       ),
       const Divider(),
