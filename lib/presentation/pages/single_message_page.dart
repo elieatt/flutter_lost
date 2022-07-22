@@ -41,7 +41,7 @@ class _SingleMessagePageState extends State<SingleMessagePage> {
   Future<void> _contactViaWhatsapp(String phoneNumber) async {
     String url;
     if (Platform.isAndroid) {
-      url = "https://wa.me/$phoneNumber/?text=hi"; // new line
+      url = "whatsapp://send?phone=$phoneNumber"; // new line
     } else {
       url = "https://api.whatsapp.com/send?phone=$phoneNumber=hi"; // new line
     }
@@ -102,51 +102,57 @@ class _SingleMessagePageState extends State<SingleMessagePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Center(
-            child: Text("Message Info"),
-          ),
+          title: const Text("Message Info"),
         ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SenderReciverTable(
-                pageWidth: pageWidth,
-                sender: widget.message.sender["userName"],
-                reciver: widget.message.reciver["userName"],
+              FittedBox(
+                child: SenderReciverTable(
+                  pageWidth: pageWidth,
+                  sender: widget.message.sender["userName"],
+                  reciver: widget.message.reciver["userName"],
+                ),
               ),
-              TextButton(
-                onPressed: (() => Navigator.pushNamed(context, "/itemView",
-                    arguments: Item.fromDynamic(widget.message.item))),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(25),
-                      child: Text(
-                        "ITEM : " + widget.message.item["title"],
-                        style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: Hero(
-                        tag: widget.message.id,
-                        child: FadeInImage(
-                          height: 400,
-                          fit: BoxFit.cover,
-                          placeholder: const AssetImage(
-                            "assets/placeholderpng.png",
-                          ),
-                          image: NetworkImage(
-                            widget.message.item["imageUrl"],
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue),
+                    borderRadius: BorderRadius.circular(40)),
+                child: TextButton(
+                  onPressed: (() => Navigator.pushNamed(context, "/itemView",
+                      arguments: Item.fromDynamic(widget.message.item))),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(25),
+                        child: Text(
+                          "ITEM : " + widget.message.item["title"],
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Hero(
+                          tag: widget.message.id,
+                          child: FadeInImage(
+                            height: 325,
+                            fit: BoxFit.cover,
+                            placeholder: const AssetImage(
+                              "assets/placeholderpng.png",
+                            ),
+                            image: NetworkImage(
+                              widget.message.item["imageUrl"],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               _buildDivider(),

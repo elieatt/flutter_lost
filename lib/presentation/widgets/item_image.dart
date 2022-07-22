@@ -23,12 +23,17 @@ class ItemImage extends StatelessWidget {
           zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
           hideStatusBarWhileZooming: true,
           image: CachedNetworkImage(
-            filterQuality: FilterQuality.high,
+            filterQuality: FilterQuality.low,
             height: imageHeight,
+            //width: 350,
             fit: BoxFit.cover,
             placeholder: (context, _) {
-              return Image.asset(
-                "assets/placeholderpng.png",
+              return Container(
+                height: 200,
+                width: 200,
+                child: Image.asset(
+                  "assets/placeholderpng.png",
+                ),
               );
             },
             imageUrl: imageUrl,

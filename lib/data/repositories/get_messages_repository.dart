@@ -6,7 +6,7 @@ import 'package:lostsapp/data/network_services/get_messages_network_service,.dar
 class GetMessagesRepository {
   final List<Message> _recivedMessagesArray = [];
   final List<Message> _sentMessagesArray = [];
-  List<int> _numberOfUnreadMessages = [0];
+  final List<int> _numberOfUnreadMessages = [0];
   final GetMessagesNetworkService gmns;
   GetMessagesRepository({
     required this.gmns,

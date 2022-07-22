@@ -37,10 +37,14 @@ class AuthCubit extends Cubit<AuthState> {
   void startupLogin() {
     repo.getStoredToken().then((mapofUserAndExpire) {
       //print(mapofUserAndExpire);
-
-      if (mapofUserAndExpire != null) {
+      if (mapofUserAndExpire == null) {
+        emit(AuthNoToken());
+        return;
+      } else if (mapofUserAndExpire != null) {
         _expire = DateTime.parse(mapofUserAndExpire["expire"] as String);
         if (_expire.isBefore(DateTime.now())) {
+          emit(AuthNoToken());
+
           return;
         }
         autoLogout(_expire.difference(DateTime.now()).inSeconds);
@@ -83,7 +87,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   @override
   void onChange(Change<AuthState> change) {
-    //print(change);
+    print("hi");
+    print(change);
     super.onChange(change);
   }
 }

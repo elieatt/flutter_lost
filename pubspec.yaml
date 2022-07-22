@@ -55,11 +55,17 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_native_splash: ^1.2.4
+  flutter_launcher_icons: ^0.9.3
 
 
 flutter_native_splash:
   color: "ffffff"
-  image: assets/splash.png    
+  image: assets/splash.png 
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/splash.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -73,6 +79,7 @@ flutter:
   assets:
     - assets/placeholderpng.png
     - assets/demo.png
+    - assets/splash.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

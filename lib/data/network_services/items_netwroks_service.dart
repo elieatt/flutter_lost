@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import '../../constants/env.dart';
 
-import '../models/item.dart';
 import 'package:http/http.dart' as http;
 
 class ItemsNetworkService {

@@ -96,7 +96,7 @@ Widget _buildDateTimeTextFormField(BuildContext context) {
           Icons.date_range,
           color: Colors.amberAccent,
         ),
-        labelText: 'Date if loose/found',
+        labelText: 'Date of loose/found',
         labelStyle: const TextStyle(color: Colors.black),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Color(Colors.amber.alpha), width: 3),

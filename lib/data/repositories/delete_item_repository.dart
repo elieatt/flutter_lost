@@ -10,7 +10,6 @@ class DeleteItemRepository {
         "Authorization": 'bare $token',
       });
     } catch (e) {
-      print(e);
       return "failed";
     }
     if (respone.statusCode == 201) {

@@ -52,7 +52,7 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       Card(
-        color: Colors.grey[200],
+        color: Colors.grey[50],
         margin: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: <Widget>[

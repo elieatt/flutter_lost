@@ -111,11 +111,11 @@ class _SingleItemPageState extends State<SingleItemPage> {
                 child: UserNameTag(name: widget.item.user["userName"]),
               ),
               Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.all(10),
                   child: ItemImage(
                       heroTag: widget.item.id,
                       imageUrl: widget.item.imageUrl,
-                      imageHeight: 400)),
+                      imageHeight: 350)),
               Container(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: LocationTag(

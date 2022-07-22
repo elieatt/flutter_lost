@@ -9,7 +9,7 @@ import 'package:lostsapp/presentation/widgets/items_loading_signs/no_items_found
 import '../../logic/cubit/items_cubit.dart';
 
 class FoundItemsPage extends StatefulWidget {
-  FoundItemsPage({Key? key}) : super(key: key);
+  const FoundItemsPage({Key? key}) : super(key: key);
 
   @override
   State<FoundItemsPage> createState() => _FoundItemsPageState();

@@ -13,8 +13,12 @@ class UserNameTag extends StatelessWidget {
         mainAxisAlignment: alignment1 ?? MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const CircleAvatar(
-            child: Icon(Icons.person),
+          CircleAvatar(
+            backgroundColor: Colors.amber[200],
+            child: const Icon(
+              Icons.person,
+              color: Colors.black,
+            ),
           ),
           const SizedBox(
             width: 10,

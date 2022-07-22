@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 
 class ContactButtons extends StatelessWidget {
@@ -6,6 +8,7 @@ class ContactButtons extends StatelessWidget {
   final Function contactViaPhoneCall;
   final String phoneNumber, email;
 
+  // ignore: prefer_const_constructors_in_immutables
   ContactButtons(
       {Key? key,
       required this.email,
@@ -20,7 +23,7 @@ class ContactButtons extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         Icon(
           icon,

@@ -21,4 +21,6 @@ class AuthLoginedIn extends AuthState {
   });
 }
 
+class AuthNoToken extends AuthState {}
+
 class AuthSignedUp extends AuthState {}

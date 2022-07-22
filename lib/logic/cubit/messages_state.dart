@@ -12,6 +12,7 @@ class MessagesSentMessagesFound extends MessagesState {
   MessagesSentMessagesFound({required this.sentMessages});
 }
 
+// ignore: must_be_immutable
 class MessagesrecivedMessagesFound extends MessagesState {
   final List<Message> recivedMessages;
   int unReadMessagesCount;

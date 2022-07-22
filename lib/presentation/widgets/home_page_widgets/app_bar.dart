@@ -32,11 +32,15 @@ AppBar buildAppBar(int index, TabController? htc, TabController? mtc) {
     );
   } else if (index == 1) {
     return AppBar(
-      title: const Center(child: Text("Post an Item")),
+      title: const Text("Post an Item"),
     );
   }
   return AppBar(
-    title: const Center(child: Text("Messages")),
+    title: const Center(
+        child: Padding(
+      padding: EdgeInsets.only(right: 50),
+      child: Text("Messages"),
+    )),
     bottom: TabBar(labelColor: Colors.white, controller: mtc, tabs: const [
       Tab(height: 50, text: "Recived", icon: FaIcon(FontAwesomeIcons.inbox)),
       Tab(

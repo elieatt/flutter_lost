@@ -2,12 +2,14 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
-import 'package:lostsapp/presentation/widgets/alert_dialog.dart';
+
 import 'package:lostsapp/presentation/widgets/awesome_dia.dart';
 
 import '../../constants/enums.dart';
 
 class AuthPage extends StatefulWidget {
+  const AuthPage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return AuthPageState();
@@ -96,7 +98,7 @@ class AuthPageState extends State<AuthPage> {
         ),
         fillColor: Colors.amber[100],
         helperText: 'Password must be More Than 8',
-        helperStyle: TextStyle(fontSize: 15),
+        helperStyle: const TextStyle(fontSize: 15),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(width: 2, color: Colors.blue),
         ),
@@ -131,7 +133,7 @@ class AuthPageState extends State<AuthPage> {
           ),
           fillColor: Colors.amber[100],
           helperText: 'Password must be More Than 8',
-          helperStyle: TextStyle(fontSize: 15),
+          helperStyle: const TextStyle(fontSize: 15),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(width: 2, color: Colors.blue),
           ),

@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,8 +116,10 @@ class AddPageState extends State<AddPage> {
                   BlocBuilder<PostItemCubit, PostItemState>(
                     builder: (context, state) {
                       if (state is PostItemProgress) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(15),
+                          child: const CircularProgressIndicator(),
                         );
                       }
                       return ElevatedButton(

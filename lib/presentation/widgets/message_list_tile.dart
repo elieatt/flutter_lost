@@ -50,8 +50,8 @@ class MessageListTile extends StatelessWidget {
       ),
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(
-          message.messageText.length > 37
-              ? message.messageText.substring(0, 37) + "......"
+          message.messageText.length > 25
+              ? message.messageText.substring(0, 25) + "......"
               : message.messageText,
         ),
         messageType == true && message.read == false

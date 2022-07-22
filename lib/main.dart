@@ -13,10 +13,11 @@ import 'data/network_services/items_netwroks_service.dart';
 import 'data/repositories/items_repository.dart';
 import 'logic/cubit/items_cubit.dart';
 
-void main() {
+void main() async {
   final authRepo = AuthRepository();
   final itemsRepo = ItemsRepository(ItemsNetworkService());
   AppRouter appRouter = AppRouter();
+
   runApp(MyApp(
     appRouter: appRouter,
     itemsRepo: itemsRepo,
@@ -28,13 +29,14 @@ class MyApp extends StatelessWidget {
   final AuthRepository authRepo;
   final ItemsRepository itemsRepo;
   final AppRouter appRouter;
-  MyApp({
+  const MyApp({
     Key? key,
     required this.authRepo,
     required this.itemsRepo,
     required this.appRouter,
   }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
@@ -50,6 +52,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => MessagesCubit())
       ],
       child: MaterialApp(
+        title: 'LostsApp',
         theme: ThemeData(
             brightness: Brightness.light,
             primaryColor: Colors.amber[100],

@@ -17,7 +17,7 @@ class SenderReciverTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      margin: const EdgeInsets.all(40),
+      margin: const EdgeInsets.only(top: 40, left: 40, right: 40, bottom: 20),
       width: pageWidth > 720 ? pageWidth / 3.5 : pageWidth,
       child: Table(
         //border: TableBorder.all(),
