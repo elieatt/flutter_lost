@@ -232,7 +232,7 @@ Widget _buildLocationDropDownMenu() {
       }).toList(),
       validator: (String? value) {
         if (value == null || value.isEmpty) {
-          return "Please select a category";
+          return "Please select a governorate";
         }
       },
       onChanged: (String? value) => _formData["governorate"] = value);

@@ -19,7 +19,7 @@ class _FoundItemsPageState extends State<FoundItemsPage> {
   @override
   void initState() {
     final String token = context.read<AuthCubit>().user!.token;
-    context.read<ItemsCubit>().fetchFoundItems(token, true);
+    context.read<ItemsCubit>().fetchFoundItems(token, false);
     super.initState();
   }
 
@@ -54,12 +54,9 @@ class _FoundItemsPageState extends State<FoundItemsPage> {
             pageHeight: pageHeight,
           ));
         }
-        return ListView(children: [
-          SizedBox(
-            height: pageHeight / 2,
-          ),
-          const Center(child: Text("error"))
-        ]);
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       }),
     );
   }

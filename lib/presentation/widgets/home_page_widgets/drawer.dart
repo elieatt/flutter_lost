@@ -30,7 +30,7 @@ _showDialogAlert(context) {
 Widget buildDrawer(BuildContext context, void Function(int) onTapped,
     TabController htb, TabController mtb) {
   return Drawer(
-    child: Column(children: [
+    child: ListView(children: [
       AppBar(
         toolbarHeight: 100,
         automaticallyImplyLeading: false,

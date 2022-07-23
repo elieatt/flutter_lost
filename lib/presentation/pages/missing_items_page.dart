@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/items_cubit.dart';
-import 'package:lostsapp/presentation/widgets/items_loading_signs/error_sign.dart';
+
 import 'package:lostsapp/presentation/widgets/items_loading_signs/no_internet_sign.dart';
 import 'package:lostsapp/presentation/widgets/items_loading_signs/no_items_found_sign.dart';
 
@@ -21,7 +21,7 @@ class _MissingPageState extends State<MissingPage> {
   void initState() {
     context
         .read<ItemsCubit>()
-        .fetchLostItems(context.read<AuthCubit>().user!.token, true);
+        .fetchLostItems(context.read<AuthCubit>().user!.token, false);
 
     super.initState();
   }
@@ -56,7 +56,10 @@ class _MissingPageState extends State<MissingPage> {
             child: NoItemsFoundSign(pageHeight: pageHeight),
           );
         }
-        return ErrorSign();
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+        ;
       }),
     );
   }

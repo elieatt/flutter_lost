@@ -100,7 +100,7 @@ class ImageFieldState extends State<ImageField> {
               )
             : Image.file(
                 File(imageFile!.path),
-                height: 300,
+                height: 400,
                 width: MediaQuery.of(context).size.width / 1.2,
                 alignment: Alignment.topCenter,
                 fit: BoxFit.cover,

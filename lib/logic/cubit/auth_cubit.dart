@@ -78,7 +78,7 @@ class AuthCubit extends Cubit<AuthState> {
     await repo.deleteStoredToke();
     _authTimer.cancel();
     user = null;
-    emit(AuthInitial());
+    emit(AuthNoToken());
   }
 
   void autoLogout(int time) {

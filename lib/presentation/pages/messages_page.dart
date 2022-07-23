@@ -55,7 +55,7 @@ class MessagesPage extends StatelessWidget {
               ],
             ),
           );
-        } else if (state is MessagesSentMessagesFound) {
+        } else if (state is MessagesSentMessagesFound && index == 1) {
           return ListView.builder(
             itemCount: state.sentMessages.length,
             itemBuilder: (BuildContext context, int j) {
@@ -65,7 +65,7 @@ class MessagesPage extends StatelessWidget {
               );
             },
           );
-        } else if (state is MessagesrecivedMessagesFound) {
+        } else if (state is MessagesrecivedMessagesFound && index == 0) {
           return ListView.builder(
             itemCount: state.recivedMessages.length,
             itemBuilder: (BuildContext context, int i) {
@@ -76,7 +76,7 @@ class MessagesPage extends StatelessWidget {
             },
           );
         }
-        return const Center(child: Text("ERROR"));
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }
