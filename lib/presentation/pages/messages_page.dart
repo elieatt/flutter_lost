@@ -27,6 +27,14 @@ class MessagesPage extends StatelessWidget {
         : BlocProvider.of<MessagesCubit>(context)
             .getSentMessages(token, userId);
     return BlocBuilder<MessagesCubit, MessagesState>(
+      buildWhen: (previous, current) {
+        return (index == 0 &&
+                current is! MessagesSentMessagesFound &&
+                current is! MessagesNoSentMessagesFound) ||
+            (index == 1 &&
+                current is! MessagesrecivedMessagesFound &&
+                current is! MessagesNoRecivedMessagesFound);
+      },
       builder: (context, state) {
         if (state is MessagesProgress) {
           return const Center(

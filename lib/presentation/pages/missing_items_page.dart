@@ -38,7 +38,10 @@ class _MissingPageState extends State<MissingPage> {
         BlocProvider.of<ItemsCubit>(context).fetchLostItems(
             BlocProvider.of<AuthCubit>(context).user!.token, true);
       },
-      child: BlocBuilder<ItemsCubit, ItemsState>(builder: (_, state) {
+      child:
+          BlocBuilder<ItemsCubit, ItemsState>(buildWhen: (previous, current) {
+        return current is! FoundItemsFound;
+      }, builder: (_, state) {
         if (state is ItemsInitial) {
           return const Center(
             child: CircularProgressIndicator(),

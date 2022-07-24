@@ -51,7 +51,7 @@ class ItemsCubit extends Cubit<ItemsState> {
     });
   }
 
-  void fetchFoundItems(String token, bool refresh) {
+  Future<void> fetchFoundItems(String token, bool refresh) async {
     // print("fetching found itmes");
     emit(ItemsInitial());
     if (_internetState is InternetDisconnected) {

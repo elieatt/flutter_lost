@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:lostsapp/constants/list_of_classification.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
+import 'package:lostsapp/logic/cubit/items_cubit.dart';
 import 'package:lostsapp/logic/cubit/post_item_cubit.dart';
 import 'package:lostsapp/presentation/widgets/add_page_widgets/image.dart';
 import 'package:lostsapp/presentation/widgets/awesome_dia.dart';
@@ -30,9 +31,11 @@ DateTime _nowDT = DateTime.now();
 
 class AddPage extends StatefulWidget {
   final Function onTapped;
-  const AddPage({
+  TabController htb;
+  AddPage({
     Key? key,
     required this.onTapped,
+    required this.htb,
   }) : super(key: key);
 
   @override
@@ -70,7 +73,7 @@ class AddPageState extends State<AddPage> {
     double width = MediaQuery.of(context).size.width;
     double tagetPadding = width > 600 ? width / 2 / 2 : width / 5 / 2;
     return BlocListener<PostItemCubit, PostItemState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is PostItemFailed) {
             buildAwrsomeDia(context, "Post Failed", state.message, "OK").show();
           } else if (state is PostItemSuccessed) {
@@ -80,6 +83,10 @@ class AddPageState extends State<AddPage> {
               ),
               duration: Duration(seconds: 1),
             ));
+            final String token = context.read<AuthCubit>().user!.token;
+            widget.htb.index == 1
+                ? await context.read<ItemsCubit>().fetchFoundItems(token, true)
+                : await context.read<ItemsCubit>().fetchLostItems(token, true);
             widget.onTapped(0);
           }
         },

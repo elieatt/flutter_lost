@@ -82,6 +82,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             create: (context) => PostItemCubit(AddnUpdateRepository()),
             child: AddPage(
               onTapped: onTapped,
+              htb: _homePageTabController,
             ),
           ),
           TabBarView(

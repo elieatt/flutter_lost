@@ -32,7 +32,10 @@ class _FoundItemsPageState extends State<FoundItemsPage> {
         BlocProvider.of<ItemsCubit>(context)
             .fetchFoundItems(context.read<AuthCubit>().user!.token, true);
       },
-      child: BlocBuilder<ItemsCubit, ItemsState>(builder: (context, state) {
+      child:
+          BlocBuilder<ItemsCubit, ItemsState>(buildWhen: (previous, current) {
+        return current is! LostItemsFound;
+      }, builder: (context, state) {
         if (state is ItemsInitial) {
           return const Center(
             child: CircularProgressIndicator(),
