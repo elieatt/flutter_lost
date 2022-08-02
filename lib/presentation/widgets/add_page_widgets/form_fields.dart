@@ -4,15 +4,17 @@ Widget _buildTitleTextFormField(BuildContext context) {
   return TextFormField(
     decoration: InputDecoration(
       filled: true,
-      fillColor: Theme.of(context).accentColor,
-      icon: const Icon(
+      // fillColor: Theme.of(context).colorScheme.secondary,
+      icon: Icon(
         Icons.title,
-        color: Colors.amberAccent,
+        color: Theme.of(context).colorScheme.secondary,
       ),
       labelText: 'Item title',
-      labelStyle: const TextStyle(color: Colors.black),
+      labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(Colors.amber.alpha), width: 3),
+        borderSide: BorderSide(
+            color: Color(Theme.of(context).colorScheme.secondary.alpha),
+            width: 3),
       ),
     ),
     keyboardType: TextInputType.text,
@@ -33,15 +35,16 @@ Widget _buildDescriptionTextFormField(BuildContext context) {
     maxLines: 11,
     decoration: InputDecoration(
       filled: true,
-      fillColor: Colors.amber[150],
-      icon: const Icon(
+      //  fillColor: Theme.of(context).colorScheme.secondary,
+      icon: Icon(
         Icons.edit,
-        color: Colors.blue,
+        color: Theme.of(context).colorScheme.primary,
       ),
       labelText: 'Description',
-      labelStyle: const TextStyle(color: Colors.black),
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.blue, width: 3),
+      labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+      enabledBorder: OutlineInputBorder(
+        borderSide:
+            BorderSide(color: Theme.of(context).colorScheme.primary, width: 3),
       ),
     ),
     keyboardType: TextInputType.text,
@@ -61,10 +64,12 @@ void _showDatePicker(BuildContext context) {
       minTime: DateTime(2021, 3, 5),
       maxTime: _nowDT,
       theme: DatePickerTheme(
-          headerColor: Colors.amber,
-          backgroundColor: Theme.of(context).accentColor,
-          itemStyle: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          headerColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          itemStyle: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontWeight: FontWeight.bold,
+              fontSize: 18),
           doneStyle: const TextStyle(color: Colors.white, fontSize: 16)),
       onConfirm: (date) {
     print('confirm ${date.toIso8601String()}');
@@ -91,15 +96,17 @@ Widget _buildDateTimeTextFormField(BuildContext context) {
       readOnly: true,
       decoration: InputDecoration(
         filled: true,
-        fillColor: Theme.of(context).accentColor,
-        icon: const Icon(
+        //    fillColor: Theme.of(context).colorScheme.secondary,
+        icon: Icon(
           Icons.date_range,
-          color: Colors.amberAccent,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         labelText: 'Date of loose/found',
-        labelStyle: const TextStyle(color: Colors.black),
+        labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(Colors.amber.alpha), width: 3),
+          borderSide: BorderSide(
+              color: Color(Theme.of(context).colorScheme.secondary.alpha),
+              width: 3),
         ),
       ),
       onTap: () => _showDatePicker(context),
@@ -142,15 +149,16 @@ Widget _buildtypeOfItemTextFormField(BuildContext context) {
     controller: _typeTextController,
     decoration: InputDecoration(
       filled: true,
-      fillColor: Colors.amber[150],
-      icon: const Icon(
+      //  fillColor: Theme.of(context).colorScheme.secondary,
+      icon: Icon(
         Icons.edit,
-        color: Colors.blue,
+        color: Theme.of(context).colorScheme.primary,
       ),
       labelText: 'Found or Missing',
-      labelStyle: const TextStyle(color: Colors.black),
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.blue, width: 3),
+      labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+      enabledBorder: OutlineInputBorder(
+        borderSide:
+            BorderSide(color: Theme.of(context).colorScheme.primary, width: 3),
       ),
     ),
     readOnly: true,
@@ -169,24 +177,27 @@ Widget _buildCategoryDropDownMenu(BuildContext context) {
       menuMaxHeight: 325,
       decoration: InputDecoration(
           filled: true,
-          fillColor: Theme.of(context).accentColor,
-          icon: const Icon(
+          //  fillColor: Theme.of(context).colorScheme.secondary,
+          icon: Icon(
             Icons.class_,
-            color: Colors.amberAccent,
+            color: Theme.of(context).colorScheme.secondary,
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(Colors.amber.alpha), width: 3),
+            borderSide: BorderSide(
+                color: Color(Theme.of(context).colorScheme.secondary.alpha),
+                width: 3),
           )),
-      hint: const Text(
+      hint: Text(
         "Category",
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
       ),
       items: category.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Row(
             children: [
-              FaIcon(toIcon(value), color: Colors.amber),
+              FaIcon(toIcon(value),
+                  color: Theme.of(context).colorScheme.secondary),
               const SizedBox(
                 width: 5.0,
               ),
@@ -203,23 +214,24 @@ Widget _buildCategoryDropDownMenu(BuildContext context) {
       onChanged: (String? value) => _formData["category"] = value);
 }
 
-Widget _buildLocationDropDownMenu() {
+Widget _buildLocationDropDownMenu(BuildContext context) {
   return DropdownButtonFormField<String>(
       menuMaxHeight: 325,
       decoration: InputDecoration(
         filled: true,
-        fillColor: Colors.amber[150],
-        icon: const Icon(
+        //fillColor: Theme.of(context).colorScheme.secondary,
+        icon: Icon(
           Icons.location_on_sharp,
-          color: Colors.blue,
+          color: Theme.of(context).colorScheme.primary,
         ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue, width: 3),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.primary, width: 3),
         ),
       ),
-      hint: const Text(
+      hint: Text(
         "Governorate",
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
       ),
       items: governorate.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(

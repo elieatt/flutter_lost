@@ -24,9 +24,9 @@ class LocationTag extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.0)),
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.location_on,
-                color: Colors.amber,
+                color: Theme.of(context).colorScheme.secondary,
                 size: 20,
               ),
               const SizedBox(
@@ -38,10 +38,11 @@ class LocationTag extends StatelessWidget {
         ),
         Container(
             margin: const EdgeInsets.symmetric(horizontal: 5),
-            child: const Text(
+            child: Text(
               "|",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.amber),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.secondary),
             )),
         Container(
             padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
@@ -53,10 +54,10 @@ class LocationTag extends StatelessWidget {
               children: [
                 FaIcon(
                   toIcon(category),
-                  color: Colors.amber,
+                  color: Theme.of(context).colorScheme.secondary,
                   size: 20,
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Text(category),
               ],
             )),

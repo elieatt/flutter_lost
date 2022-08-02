@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/delete_message_cubit.dart';
 
-import '../delete_confirm_dialog.dart';
+import '../dialogs/delete_confirm_dialog.dart';
 
 class DeleteButton extends StatelessWidget {
   final String messageId;
@@ -20,7 +20,8 @@ class DeleteButton extends StatelessWidget {
           : EdgeInsets.symmetric(horizontal: pageWidth / 4, vertical: 15),
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.red.withOpacity(0.95)),
         ),
         onPressed: () async {
           bool? toDelete = await showDeleteConfirmDialog(context, "messages");

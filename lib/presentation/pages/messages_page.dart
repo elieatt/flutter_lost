@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/messages_cubit.dart';
 
-import 'package:lostsapp/presentation/widgets/message_list_tile.dart';
+import 'package:lostsapp/presentation/widgets/messages_page_widgets/message_list_tile.dart';
 import 'package:lostsapp/presentation/widgets/items_loading_signs/no_internet_sign.dart';
 
 class MessagesPage extends StatelessWidget {

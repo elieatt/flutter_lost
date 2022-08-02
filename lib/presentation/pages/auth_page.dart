@@ -2,8 +2,13 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
+import 'package:lostsapp/presentation/widgets/auth_page_widgets/confirm_password_form_field.dart';
+import 'package:lostsapp/presentation/widgets/auth_page_widgets/email_form_field.dart';
+import 'package:lostsapp/presentation/widgets/auth_page_widgets/password_form_field.dart';
+import 'package:lostsapp/presentation/widgets/auth_page_widgets/phonenumber_formf_ield.dart';
+import 'package:lostsapp/presentation/widgets/auth_page_widgets/user_name_form_field.dart';
 
-import 'package:lostsapp/presentation/widgets/awesome_dia.dart';
+import 'package:lostsapp/presentation/widgets/dialogs/awesome_dia.dart';
 
 import '../../constants/enums.dart';
 
@@ -16,7 +21,7 @@ class AuthPage extends StatefulWidget {
   }
 }
 
-class AuthPageState extends State<AuthPage> {
+class AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   AuthMode _mode = AuthMode.login;
   late String _email;
   late String _password;
@@ -25,17 +30,24 @@ class AuthPageState extends State<AuthPage> {
   bool _acceptterms = false;
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  //TextEditingController _phoneNumberController = TextEditingController();
 
-  /* DecorationImage _buildBackgroundImage() {
-    return DecorationImage(
-        image: AssetImage('assets/background.jpg'),
-        fit: BoxFit.cover,
-        colorFilter: ColorFilter.mode(
-          Colors.black.withOpacity(0.5),
-          BlendMode.dstATop,
-        ));
-  } */
+  late AnimationController _controller;
+  late Animation<Offset> _slidAnimation;
+  @override
+  void initState() {
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
+    _slidAnimation =
+        Tween<Offset>(begin: const Offset(0.0, -0.2), end: Offset.zero).animate(
+            CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   String _loginOrSignupString(bool? value) {
     if (value == null) {
@@ -47,168 +59,29 @@ class AuthPageState extends State<AuthPage> {
     }
   }
 
-  Widget _buildEmailTextField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Email',
-        filled: true,
-        icon: const Icon(
-          Icons.account_box,
-          size: 40,
-          color: Colors.blue,
-        ),
-        fillColor: Colors.amber[100],
-        labelStyle: const TextStyle(
-          color: Colors.black,
-          fontSize: 20,
-        ),
-        helperText: 'Enter your email.',
-        helperStyle: const TextStyle(fontSize: 15),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(width: 2, color: Colors.blue),
-        ),
-      ),
-      keyboardType: TextInputType.text,
-      validator: (String? value) {
-        if (value == null ||
-            value.isEmpty ||
-            !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-                .hasMatch(value)) {
-          return 'Enter a valid email.';
-        }
-      },
-      onSaved: (String? value) {
-        setState(() {
-          _email = value!;
-        });
-      },
-    );
+  void setUserName(String name) {
+    _userName = name;
   }
 
-  Widget _buildPasswordTextField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Password',
-        labelStyle: const TextStyle(fontSize: 20, color: Colors.black),
-        filled: true,
-        icon: const Icon(
-          Icons.mode_edit,
-          size: 40,
-          color: Colors.blue,
-        ),
-        fillColor: Colors.amber[100],
-        helperText: 'Password must be More Than 8',
-        helperStyle: const TextStyle(fontSize: 15),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(width: 2, color: Colors.blue),
-        ),
-      ),
-      obscureText: true,
-      validator: (String? value) {
-        if (value!.isEmpty || value.length < 5) return 'Password  Invaild';
-      },
-      onChanged: (String value) {
-        setState(() {
-          _password = value;
-        });
-      },
-      onSaved: (String? value) {
-        setState(() {
-          _password = value!;
-        });
-      },
-    );
+  void setPhoneNumber(String phoneNumber) {
+    _phoneNumber = phoneNumber;
   }
 
-  Widget _buildConfirmPasswordTextField() {
-    return TextFormField(
-        decoration: InputDecoration(
-          labelText: 'Confirm Password',
-          labelStyle: const TextStyle(fontSize: 20, color: Colors.black),
-          filled: true,
-          icon: const Icon(
-            Icons.mode_edit,
-            size: 40,
-            color: Colors.blue,
-          ),
-          fillColor: Colors.amber[100],
-          helperText: 'Password must be More Than 8',
-          helperStyle: const TextStyle(fontSize: 15),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(width: 2, color: Colors.blue),
-          ),
-        ),
-        obscureText: true,
-        validator: (String? value) {
-          if (value != _password) return 'Passwords dont match';
-        });
+  void setEmail(String email) {
+    _email = email;
   }
 
-  Widget _buildPhoneNumberTextFromField() {
-    return TextFormField(
-        initialValue: "+963",
-        //controller: _phoneNumberController,
-        keyboardType: TextInputType.phone,
-        decoration: InputDecoration(
-          labelText: 'Enter your phone number',
-          labelStyle: const TextStyle(fontSize: 20, color: Colors.black),
-          filled: true,
-          icon: const Icon(
-            Icons.phone,
-            size: 40,
-            color: Colors.blue,
-          ),
-          fillColor: Colors.amber[100],
-          helperText: 'Phone number must start with 00963',
-          helperStyle: const TextStyle(fontSize: 15),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(width: 2, color: Colors.blue),
-          ),
-        ),
-        validator: (String? value) {
-          if (value == null || value.length < 13) {
-            return 'Please Enter a valid phone Number';
-          }
-        },
-        onSaved: (String? value) {
-          _phoneNumber = value!;
-        });
+  void setPassword(String password) {
+    _password = password;
   }
 
-  Widget _buildUserNameTextFromField() {
-    return TextFormField(
-
-        //controller: _phoneNumberController,
-
-        decoration: InputDecoration(
-          labelText: 'Enter your Name',
-          labelStyle: const TextStyle(fontSize: 20, color: Colors.black),
-          filled: true,
-          icon: const Icon(
-            Icons.person,
-            size: 40,
-            color: Colors.blue,
-          ),
-          fillColor: Colors.amber[100],
-          helperText: 'Name must be +6 characters',
-          helperStyle: const TextStyle(fontSize: 15),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(width: 2, color: Colors.blue),
-          ),
-        ),
-        validator: (String? value) {
-          if (value == null || value.length < 6) {
-            return 'Please Enter a valid Name';
-          }
-        },
-        onSaved: (String? value) {
-          _userName = value!;
-        });
+  String getPassword() {
+    return _password;
   }
 
   Widget _buildAcceptSwitch() {
     return SwitchListTile(
-      activeColor: Colors.blue,
+      activeColor: Theme.of(context).colorScheme.primary,
       value: _acceptterms,
       onChanged: (bool value) {
         setState(() {
@@ -226,13 +99,24 @@ class AuthPageState extends State<AuthPage> {
     return TextButton(
         child: Text(_loginOrSignupString(true)),
         onPressed: (() {
-          setState(() {
-            if (_mode == AuthMode.login) {
+          if (_mode == AuthMode.login) {
+            setState(() {
               _mode = AuthMode.signup;
-            } else {
-              _mode = AuthMode.login;
-            }
-          });
+            });
+
+            _controller.forward();
+          } else {
+            _controller.reverse();
+
+            Future.delayed(
+              const Duration(milliseconds: 301),
+              () {
+                setState(() {
+                  _mode = AuthMode.login;
+                });
+              },
+            );
+          }
         }));
   }
 
@@ -247,100 +131,119 @@ class AuthPageState extends State<AuthPage> {
     }
   }
 
+  Widget _buildPage(double targetWidth, double deviceWidth) {
+    return Scaffold(
+      /*  appBar: AppBar(
+        title: Center(child: Text(_loginOrSignupString(null))),
+      ), */
+      body: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10.5),
+        decoration: BoxDecoration(
+            /* image: _buildBackgroundImage(), */
+            ),
+        child: ListView(children: [
+          Padding(
+            padding: const EdgeInsets.all(40),
+            child: Text(
+              "LostsApp",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 70,
+                  fontFamily: "Pacifico",
+                  color: Theme.of(context).colorScheme.primary),
+            ),
+          ),
+          Form(
+            key: _formkey,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: deviceWidth * 0.10),
+              child: Column(
+                children: [
+                  _buildModeToggleButton(),
+                  EmailFormField(setEmail: setEmail),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  PasswordFormField(setPassword: setPassword),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  _mode == AuthMode.login
+                      ? Container()
+                      : FadeTransition(
+                          opacity: CurvedAnimation(
+                              parent: _controller, curve: Curves.easeIn),
+                          child: SlideTransition(
+                            position: _slidAnimation,
+                            child: Column(
+                              children: [
+                                ConfirmPasswordFormField(
+                                    getPassword: getPassword),
+                                const SizedBox(
+                                  height: 30.0,
+                                ),
+                                UserNameFormField(setUserName: setUserName),
+                                const SizedBox(
+                                  height: 30.0,
+                                ),
+                                PhoneNumberFormField(
+                                    setPhoneNumber: setPhoneNumber),
+                                const SizedBox(
+                                  height: 30.0,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                  _buildAcceptSwitch(),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                      if (state is AuthProgress) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return ElevatedButton(
+                        child: Text(_loginOrSignupString(null)),
+                        onPressed: () => _submitForm(context),
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
 
     return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthSignedUp) {
-          buildAwrsomeDia(
-                  context, "Succeed", "You signed up successfully", "OK",
-                  type: DialogType.SUCCES)
-              .show();
-          setState(() {
-            _mode = AuthMode.login;
-          });
-        } else if (state is AuthFailed) {
-          buildAwrsomeDia(context, "Auth Failed", state.message, "OK",
-                  type: DialogType.WARNING)
-              .show();
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).accentColor,
-          title: Center(child: Text(_loginOrSignupString(null))),
-        ),
-        body: Container(
-          padding: const EdgeInsets.all(10.5),
-          decoration: const BoxDecoration(
-              /* image: _buildBackgroundImage(), */
-              ),
-          child: Center(
-            child: SizedBox(
-              width: targetWidth,
-              child: Form(
-                key: _formkey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _buildModeToggleButton(),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      _buildEmailTextField(),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      _buildPasswordTextField(),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      _mode == AuthMode.login
-                          ? Container()
-                          : Column(
-                              children: [
-                                _buildConfirmPasswordTextField(),
-                                const SizedBox(
-                                  height: 30.0,
-                                ),
-                                _buildUserNameTextFromField(),
-                                const SizedBox(
-                                  height: 30.0,
-                                ),
-                                _buildPhoneNumberTextFromField(),
-                                const SizedBox(
-                                  height: 30.0,
-                                )
-                              ],
-                            ),
-                      _buildAcceptSwitch(),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      BlocBuilder<AuthCubit, AuthState>(
-                        builder: (context, state) {
-                          if (state is AuthProgress) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return ElevatedButton(
-                            child: Text(_loginOrSignupString(null)),
-                            onPressed: () => _submitForm(context),
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+        listener: (context, state) {
+          if (state is AuthSignedUp) {
+            buildAwrsomeDia(
+                    context, "Succeed", "You signed up successfully", "OK",
+                    type: DialogType.SUCCES)
+                .show();
+            _controller.reverse();
+            setState(() {
+              _mode = AuthMode.login;
+            });
+          } else if (state is AuthFailed) {
+            buildAwrsomeDia(
+                    context, "Auth Failed", state.message.toUpperCase(), "OK",
+                    type: DialogType.ERROR)
+                .show();
+          }
+        },
+        child: _buildPage(targetWidth, deviceWidth));
   }
 }

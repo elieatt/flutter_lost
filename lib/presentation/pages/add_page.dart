@@ -11,7 +11,7 @@ import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/items_cubit.dart';
 import 'package:lostsapp/logic/cubit/post_item_cubit.dart';
 import 'package:lostsapp/presentation/widgets/add_page_widgets/image.dart';
-import 'package:lostsapp/presentation/widgets/awesome_dia.dart';
+import 'package:lostsapp/presentation/widgets/dialogs/awesome_dia.dart';
 
 /* import 'dart:async';
 import 'package:flutter/services.dart' show rootBundle;
@@ -114,7 +114,7 @@ class AddPageState extends State<AddPage> {
                   const SizedBox(height: 16),
                   _buildCategoryDropDownMenu(context),
                   const SizedBox(height: 16),
-                  _buildLocationDropDownMenu(),
+                  _buildLocationDropDownMenu(context),
                   const SizedBox(height: 16),
                   ImageField(
                     selectImage: _selectImage,

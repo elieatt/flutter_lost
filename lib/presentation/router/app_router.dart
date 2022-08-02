@@ -7,8 +7,10 @@ import 'package:lostsapp/logic/cubit/delete_message_cubit.dart';
 
 import 'package:lostsapp/logic/cubit/send_message_cubit.dart';
 import 'package:lostsapp/presentation/pages/auth_page.dart';
+import 'package:lostsapp/presentation/pages/settings_page.dart';
 import 'package:lostsapp/presentation/pages/single_item_page.dart';
 import 'package:lostsapp/presentation/pages/single_message_page.dart';
+import 'package:lostsapp/presentation/pages/user_account_settings.dart';
 import 'package:lostsapp/presentation/pages/user_items_page.dart';
 
 import '../../logic/cubit/delete_item_cubit.dart';
@@ -71,6 +73,29 @@ class AppRouter {
               );
             } else {
               return AuthPage();
+            }
+          }));
+        });
+
+      case '/settingsPage':
+        return MaterialPageRoute(builder: (context) {
+          /*return AuthPage();*/
+          return BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
+            if (state is AuthLoginedIn) {
+              return const SettingsPage();
+            } else {
+              return const AuthPage();
+            }
+          }));
+        });
+      case '/accountSettings':
+        return MaterialPageRoute(builder: (context) {
+          /*return AuthPage();*/
+          return BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
+            if (state is AuthLoginedIn) {
+              return UserAcoountSettings();
+            } else {
+              return const AuthPage();
             }
           }));
         });

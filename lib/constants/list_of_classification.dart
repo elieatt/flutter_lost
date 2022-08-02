@@ -49,7 +49,7 @@ IconData toIcon(String str) {
     case "Documnets":
       return FontAwesomeIcons.file;
 
-    case "Computer":
+    case "Computer device":
       return FontAwesomeIcons.computer;
 
     case "Phone":
@@ -59,7 +59,7 @@ IconData toIcon(String str) {
       return FontAwesomeIcons.boltLightning;
 
     case "Others":
-      return FontAwesomeIcons.boltLightning;
+      return FontAwesomeIcons.notEqual;
     default:
       return FontAwesomeIcons.boltLightning;
   }

@@ -24,6 +24,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     Map<String, dynamic>? response =
         await repo.signup(email, password, phoneNumber, userName);
+    //  print(response);
 
     if (response == null || response["message"] != "User was created") {
       emit(AuthFailed(response == null
@@ -87,7 +88,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   @override
   void onChange(Change<AuthState> change) {
-    print("hi");
+    //print("hi");
     print(change);
     super.onChange(change);
   }

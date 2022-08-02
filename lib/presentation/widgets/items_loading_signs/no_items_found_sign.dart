@@ -10,11 +10,11 @@ class NoItemsFoundSign extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(children: [
       SizedBox(height: pageHeight / 3),
-      const Center(
+      Center(
         child: FaIcon(
           FontAwesomeIcons.ban,
           size: 80,
-          color: Colors.amber,
+          color: Theme.of(context).colorScheme.secondary,
         ),
       ),
       const SizedBox(

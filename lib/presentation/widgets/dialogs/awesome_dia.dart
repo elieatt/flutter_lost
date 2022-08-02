@@ -6,7 +6,7 @@ AwesomeDialog buildAwrsomeDia(
     BuildContext context, String title, String message, String action,
     {DialogType? type}) {
   return AwesomeDialog(
-      btnOkColor: Theme.of(context).accentColor,
+      btnOkColor: Theme.of(context).colorScheme.secondary,
       aligment: Alignment.center,
       //width: 400.0,
       context: context,

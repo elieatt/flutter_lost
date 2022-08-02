@@ -9,7 +9,7 @@ class DateTag extends StatelessWidget {
   Widget build(BuildContext context) {
     final double pageWidth = MediaQuery.of(context).size.width;
     return Container(
-      width: pageWidth < 736 ? pageWidth - pageWidth / 3 : pageWidth / 2,
+      width: pageWidth < 736 ? pageWidth - pageWidth / 3.5 : pageWidth / 2,
       padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey, width: 1.0),
@@ -19,7 +19,7 @@ class DateTag extends StatelessWidget {
         children: [
           Icon(
             Icons.date_range,
-            color: Colors.amber[200],
+            color: Theme.of(context).colorScheme.secondary,
           ),
           const SizedBox(
             width: 10,
@@ -27,15 +27,16 @@ class DateTag extends StatelessWidget {
           RichText(
             text: TextSpan(children: [
               TextSpan(
-                style: const TextStyle(color: Colors.black),
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
                 text: hour((date.hour)) +
                     ":" +
                     minute(date.minute) +
                     " ------------------ ",
               ),
               TextSpan(
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.w600,
                 ),
                 text: dayOrDate(date),

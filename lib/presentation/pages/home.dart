@@ -35,7 +35,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     setState(() {
       _selectedindex = index;
     });
-    _pageController.jumpToPage(index);
+    _pageController.animateToPage(index,
+        duration: Duration(milliseconds: 300), curve: Curves.easeInOutQuart);
   }
 
   @override
@@ -66,8 +67,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Scaffold(
       drawer: buildDrawer(context, onTapped, _homePageTabController,
           _messagesPageTabController),
-      appBar: buildAppBar(
-          _selectedindex, _homePageTabController, _messagesPageTabController),
+      appBar: buildAppBar(_selectedindex, _homePageTabController,
+          _messagesPageTabController, context),
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
@@ -75,7 +76,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           TabBarView(
             physics: const NeverScrollableScrollPhysics(),
             controller: _homePageTabController,
-            children: [const MissingPage(), FoundItemsPage()],
+            children: const [MissingPage(), FoundItemsPage()],
           ),
           BlocProvider<PostItemCubit>(
             lazy: false,

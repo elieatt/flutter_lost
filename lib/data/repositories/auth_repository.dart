@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:lostsapp/constants/env.dart';
@@ -23,10 +24,10 @@ class AuthRepository {
           body: jsonEncode(reqBody),
           headers: {'Content-Type': 'application/json'});
     } catch (e) {
-      print(e);
+      //print(e);
       return null;
     }
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    if (response.statusCode == 201 || response.statusCode == 409) {
       //print(response.body);
 
       Map<String, dynamic> parsedBody = jsonDecode(response.body);
@@ -48,15 +49,15 @@ class AuthRepository {
           body: jsonEncode(reqBody),
           headers: {'Content-Type': 'application/json'});
     } catch (e) {
-      print("error in login in auth repo");
-      print(e);
+      /*  print("error in login in auth repo");
+      print(e); */
       return null;
     }
     parsedResult = jsonDecode(response.body);
     // print(response.statusCode);
     if (response.statusCode == 200) {
       user = User.fromMap(parsedResult["user"]);
-      print(user);
+      // print(user);
       String timeOfExpire =
           DateTime.now().add(const Duration(days: 2)).toIso8601String();
 

@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/delete_item_cubit.dart';
 import 'package:lostsapp/logic/cubit/items_cubit.dart';
-import 'package:lostsapp/presentation/widgets/awesome_dia.dart';
+import 'package:lostsapp/presentation/widgets/dialogs/awesome_dia.dart';
 import 'package:lostsapp/presentation/widgets/items_loading_signs/no_internet_sign.dart';
 import 'package:lostsapp/presentation/widgets/items_loading_signs/no_items_found_sign.dart';
-import 'package:lostsapp/presentation/widgets/user_item_page_widgets/item_list_tile.dart';
+import 'package:lostsapp/presentation/widgets/user_items_page_widgets/item_list_tile.dart';
 
 import '../widgets/items_loading_signs/error_sign.dart';
 

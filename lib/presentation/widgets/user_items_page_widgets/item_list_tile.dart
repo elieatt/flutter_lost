@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/delete_item_cubit.dart';
-import 'package:lostsapp/presentation/widgets/delete_confirm_dialog.dart';
+import 'package:lostsapp/presentation/widgets/dialogs/delete_confirm_dialog.dart';
 
 import '../../../data/models/item.dart';
-import '../item_image.dart';
+import '../dialogs/delete_confirm_dialog.dart';
+import '../global/item_image.dart';
 
 class ItemListTile extends StatelessWidget {
   final Item item;
@@ -16,11 +17,12 @@ class ItemListTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
+          leading: CircleAvatar(
             child: ItemImage(
+              boxFit: BoxFit.cover,
               heroTag: item.id,
               imageHeight: 40.0,
+              imageWidth: 40.0,
               imageUrl: item.imageUrl,
             ),
           ),

@@ -14,7 +14,8 @@ class UserNameTag extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            backgroundColor: Colors.amber[200],
+            backgroundColor:
+                Theme.of(context).colorScheme.secondary.withOpacity(0.7),
             child: const Icon(
               Icons.person,
               color: Colors.black,

@@ -44,8 +44,8 @@ class ContactButtons extends StatelessWidget {
             children: [
               TextButton(
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.green)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.green.withOpacity(0.95))),
                 onPressed: () async {
                   await contactViaWhatsapp(phoneNumber);
                 },
@@ -54,8 +54,8 @@ class ContactButtons extends StatelessWidget {
               ),
               ElevatedButton(
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.red.withOpacity(0.95))),
                 onPressed: () async {
                   await contactViaEmail(email);
                 },
@@ -64,8 +64,8 @@ class ContactButtons extends StatelessWidget {
               ),
               ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.blue.withOpacity(0.95))),
                   onPressed: () async {
                     contactViaPhoneCall(phoneNumber);
                   },

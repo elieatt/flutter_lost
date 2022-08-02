@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lostsapp/presentation/widgets/item_image.dart';
+import 'package:lostsapp/presentation/widgets/global/item_image.dart';
 
 import '../../../data/models/item.dart';
 
@@ -22,7 +22,7 @@ class ItemCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           // Text(thing.title),
-          TitleDefault(item.title),
+          FittedBox(child: TitleDefault(item.title)),
           const SizedBox(
             width: 8.0,
           ),
@@ -39,9 +39,8 @@ class ItemCard extends StatelessWidget {
       children: <Widget>[
         IconButton(
             icon: const Icon(Icons.info),
-            color: Colors.amber,
+            color: Theme.of(context).colorScheme.secondary,
             onPressed: () {
-              print("pressed");
               Navigator.of(context).pushNamed("/itemView", arguments: item);
             }),
       ],
@@ -52,13 +51,11 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       Card(
-        color: Colors.grey[50],
         margin: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: <Widget>[
             Container(
               padding: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(color: Colors.white10),
               child: UserNameTag(name: item.user["userName"]),
             ),
 
@@ -66,6 +63,7 @@ class ItemCard extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: InteractiveViewer(
                 child: ItemImage(
+                    boxFit: BoxFit.cover,
                     heroTag: item.id,
                     imageUrl: item.imageUrl,
                     imageHeight: 275),

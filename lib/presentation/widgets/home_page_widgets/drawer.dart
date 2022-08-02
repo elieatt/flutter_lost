@@ -7,7 +7,7 @@ import 'package:lostsapp/logic/cubit/messages_cubit.dart';
 
 _showDialogAlert(context) {
   AwesomeDialog(
-      btnOkColor: Theme.of(context).accentColor,
+      btnOkColor: Theme.of(context).colorScheme.secondary,
       context: context,
       animType: AnimType.SCALE,
       dialogType: DialogType.WARNING,
@@ -110,6 +110,11 @@ Widget buildDrawer(BuildContext context, void Function(int) onTapped,
               }
             },
           ),
+          const Divider(),
+          ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () => Navigator.of(context).pushNamed("/settingsPage")),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout),

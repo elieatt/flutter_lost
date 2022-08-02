@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:lostsapp/data/models/message.dart';
-import 'package:lostsapp/presentation/widgets/item_image.dart';
+import 'package:lostsapp/presentation/widgets/global/item_image.dart';
 
-import '../../logic/cubit/auth_cubit.dart';
-import '../../logic/cubit/messages_cubit.dart';
+import '../../../logic/cubit/auth_cubit.dart';
+import '../../../logic/cubit/messages_cubit.dart';
 
 class MessageListTile extends StatelessWidget {
   final bool messageType; //true means recived and false means sent
@@ -41,12 +41,15 @@ class MessageListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(20.0),
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         child: ItemImage(
-            heroTag: message.id,
-            imageUrl: message.item["imageUrl"],
-            imageHeight: 40),
+          boxFit: BoxFit.cover,
+          heroTag: message.id,
+          imageUrl: message.item["imageUrl"],
+          imageHeight: 50,
+          imageWidth: 50,
+        ),
       ),
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(
@@ -58,8 +61,9 @@ class MessageListTile extends StatelessWidget {
             ? Container(
                 height: 10,
                 width: 10,
-                decoration: const BoxDecoration(
-                    color: Colors.green, shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    shape: BoxShape.circle),
               )
             : Container(),
       ]),

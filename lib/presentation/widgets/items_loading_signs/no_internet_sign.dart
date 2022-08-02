@@ -14,7 +14,7 @@ class NoInternetSign extends StatelessWidget {
         child: Icon(
           Icons.wifi_off_rounded,
           size: 50,
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
       const SizedBox(

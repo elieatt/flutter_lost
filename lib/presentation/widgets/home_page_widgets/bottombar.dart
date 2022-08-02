@@ -7,28 +7,20 @@ import 'package:lostsapp/logic/cubit/messages_cubit.dart';
 BottomNavigationBar buildBottomNavigator(
     BuildContext context, int _selectedindex, void Function(int) onTapped) {
   return BottomNavigationBar(
-    iconSize: 20,
+    onTap: onTapped,
+    //iconSize: 20,
     type: BottomNavigationBarType.fixed,
+
     currentIndex: _selectedindex,
     // onTap: onTapped,
     items: [
-      BottomNavigationBarItem(
-        icon: IconButton(
-          icon: const Icon(Icons.home),
-          onPressed: () {
-            onTapped(0);
-          },
-        ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.home),
         label: ('Home'),
       ),
-      BottomNavigationBarItem(
-        icon: IconButton(
-          icon: const Icon(Icons.add_box),
-          onPressed: () {
-            onTapped(1);
-          },
-        ),
-        label: 'Add',
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.add_box),
+        label: 'Post',
       ),
       BottomNavigationBarItem(
         icon: BlocBuilder<MessagesCubit, MessagesState>(
@@ -40,23 +32,13 @@ BottomNavigationBar buildBottomNavigator(
           if (state is MessagesrecivedMessagesFound) {
             if (state.unReadMessagesCount > 0) {
               return Badge(
-                badgeColor: Colors.green,
+                badgeColor: Theme.of(context).colorScheme.background,
                 badgeContent: Text(state.unReadMessagesCount.toString()),
-                child: IconButton(
-                  icon: const Icon(Icons.mail),
-                  onPressed: () {
-                    onTapped(2);
-                  },
-                ),
+                child: const Icon(Icons.mail),
               );
             }
           }
-          return IconButton(
-            icon: const Icon(Icons.mail),
-            onPressed: () {
-              onTapped(2);
-            },
-          );
+          return const Icon(Icons.mail);
         })),
         label: ('Messages'),
       )

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum AuthMode { login, signup }
 enum ConnectionType { wifi, mobile }
+//
 enum Category {
   money,
   idCard,

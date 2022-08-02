@@ -15,15 +15,18 @@ class MessageText extends StatelessWidget {
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         border: Border.all(
-            style: BorderStyle.values[1], color: Theme.of(context).accentColor),
+            style: BorderStyle.values[1],
+            color: Theme.of(context).colorScheme.primary),
         borderRadius: BorderRadius.circular(20),
       ),
       child: ReadMoreText(
         messagetxt,
         style: const TextStyle(fontSize: 17),
         lessStyle: const TextStyle(
-            fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
-        trimLines: 3,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
+        trimLines: 10,
         colorClickableText: Colors.grey,
         trimMode: TrimMode.Line,
         trimCollapsedText: 'Show more',

@@ -5,13 +5,17 @@ import 'package:pinch_zoom_image_last/pinch_zoom_image_last.dart';
 class ItemImage extends StatelessWidget {
   final String heroTag;
   final String imageUrl;
-  final double imageHeight;
+  final double? imageHeight;
+  final double? imageWidth;
+  final BoxFit? boxFit;
 
   const ItemImage(
       {Key? key,
       required this.heroTag,
       required this.imageUrl,
-      required this.imageHeight})
+      this.imageHeight,
+      this.imageWidth,
+      this.boxFit})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -20,17 +24,15 @@ class ItemImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: PinchZoomImage(
-          zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
+          zoomedBackgroundColor: const Color.fromRGBO(240, 240, 240, 1.0),
           hideStatusBarWhileZooming: true,
           image: CachedNetworkImage(
             filterQuality: FilterQuality.low,
             height: imageHeight,
-            //width: 350,
-            fit: BoxFit.cover,
+            width: imageWidth,
+            fit: boxFit ?? BoxFit.contain,
             placeholder: (context, _) {
-              return Container(
-                height: 200,
-                width: 200,
+              return SizedBox(
                 child: Image.asset(
                   "assets/placeholderpng.png",
                 ),
