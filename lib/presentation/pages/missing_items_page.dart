@@ -21,7 +21,7 @@ class _MissingPageState extends State<MissingPage> {
   void initState() {
     context
         .read<ItemsCubit>()
-        .fetchLostItems(context.read<AuthCubit>().user!.token, false);
+        .fetchLostItems(context.read<AuthCubit>().getUser().token, false);
 
     super.initState();
   }
@@ -30,13 +30,13 @@ class _MissingPageState extends State<MissingPage> {
   Widget build(BuildContext context) {
     double pageHeight = MediaQuery.of(context).size.height;
     /*  BlocProvider.of<ItemsCubit>(context)
-        .fetchLostItems(BlocProvider.of<AuthCubit>(context).user!.token, true); */
+        .fetchLostItems(BlocProvider.of<AuthCubit>(context).getUser().token, true); */
     print('built');
 
     return RefreshIndicator(
       onRefresh: () async {
         BlocProvider.of<ItemsCubit>(context).fetchLostItems(
-            BlocProvider.of<AuthCubit>(context).user!.token, true);
+            BlocProvider.of<AuthCubit>(context).getUser().token, true);
       },
       child:
           BlocBuilder<ItemsCubit, ItemsState>(buildWhen: (previous, current) {

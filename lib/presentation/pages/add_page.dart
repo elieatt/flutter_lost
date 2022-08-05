@@ -13,14 +13,6 @@ import 'package:lostsapp/logic/cubit/post_item_cubit.dart';
 import 'package:lostsapp/presentation/widgets/add_page_widgets/image.dart';
 import 'package:lostsapp/presentation/widgets/dialogs/awesome_dia.dart';
 
-/* import 'dart:async';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:lostsapp/constants/env.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
-import 'package:mime/mime.dart';
-import 'package:http_parser/http_parser.dart'; */
-
 part '../widgets/add_page_widgets/form_fields.dart';
 
 Map<String, dynamic> _formData = {};
@@ -48,7 +40,19 @@ class AddPageState extends State<AddPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    _formData.clear();
+    _timeTextController.clear();
+    _typeTextController.clear();
+    _formKey.currentState?.reset();
+
+    super.initState();
+  }
+
+  @override
   void dispose() {
+    _formData.clear();
+    _formKey.currentState?.reset();
     _typeTextController.clear();
     _timeTextController.clear();
 
@@ -64,8 +68,8 @@ class AddPageState extends State<AddPage> {
       return;
     }
     _formKey.currentState!.save();
-    await BlocProvider.of<PostItemCubit>(context)
-        .postItem(_formData, BlocProvider.of<AuthCubit>(context).user!.token);
+    await BlocProvider.of<PostItemCubit>(context).postItem(
+        _formData, BlocProvider.of<AuthCubit>(context).getUser().token);
   }
 
   @override
@@ -83,7 +87,7 @@ class AddPageState extends State<AddPage> {
               ),
               duration: Duration(seconds: 1),
             ));
-            final String token = context.read<AuthCubit>().user!.token;
+            final String token = context.read<AuthCubit>().getUser().token;
             widget.htb.index == 1
                 ? await context.read<ItemsCubit>().fetchFoundItems(token, true)
                 : await context.read<ItemsCubit>().fetchLostItems(token, true);

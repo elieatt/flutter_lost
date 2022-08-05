@@ -6,15 +6,14 @@ Future<bool?> showDeleteConfirmDialog<bool>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-            "Are you sure?",
-            style: TextStyle(
+          title: const Text("Are you sure?",
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.secondary),
-          ),
+                // color: Theme.of(context).colorScheme.secondary),
+              )),
           content: Text(
             "Deleted $objectName can't be resotred",
-            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+            // style: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
           actions: [
             TextButton(

@@ -28,8 +28,8 @@ class MessageListTile extends StatelessWidget {
     if (refresh != true) {
       return;
     }
-    final userId = BlocProvider.of<AuthCubit>(context).user!.id;
-    final token = BlocProvider.of<AuthCubit>(context).user!.token;
+    final userId = BlocProvider.of<AuthCubit>(context).getUser().id;
+    final token = BlocProvider.of<AuthCubit>(context).getUser().token;
     if (refresh == true && type) {
       BlocProvider.of<MessagesCubit>(context)
           .getRecivedMessages(token, userId, true);

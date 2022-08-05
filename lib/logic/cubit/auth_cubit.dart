@@ -9,13 +9,25 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   late Timer _authTimer;
   final AuthRepository repo;
-  late User? user;
+  late User? _user;
   late DateTime _expire;
 
   AuthCubit(
     this.repo,
   ) : super(AuthInitial()) {
     startupLogin();
+  }
+  User getUser() {
+    return User.from(_user!);
+  }
+
+  void modify(String? userName, String? phoneNumber) {
+    if (userName != null) {
+      _user!.userName = userName;
+    }
+    if (phoneNumber != null) {
+      _user!.phoneNumber = phoneNumber;
+    }
   }
 
   Future signUP(String email, String password, String phoneNumber,
@@ -50,9 +62,9 @@ class AuthCubit extends Cubit<AuthState> {
         }
         autoLogout(_expire.difference(DateTime.now()).inSeconds);
 
-        user = mapofUserAndExpire["user"] as User;
+        _user = mapofUserAndExpire["user"] as User;
 
-        emit(AuthLoginedIn(user: user!));
+        emit(AuthLoginedIn(user: _user!));
       }
     });
   }
@@ -69,16 +81,16 @@ class AuthCubit extends Cubit<AuthState> {
     } else {
       _expire = DateTime.parse(response["expire"] as String);
       autoLogout(_expire.difference(DateTime.now()).inSeconds);
-      user = User.fromMap(response["user"]);
+      _user = User.fromMap(response["user"]);
 
-      emit(AuthLoginedIn(user: user!));
+      emit(AuthLoginedIn(user: _user!));
     }
   }
 
   Future<void> logOut() async {
     await repo.deleteStoredToke();
     _authTimer.cancel();
-    user = null;
+    _user = null;
     emit(AuthNoToken());
   }
 

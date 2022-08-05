@@ -22,8 +22,8 @@ class _UserItemsPageState extends State<UserItemsPage> {
   late String userId;
   @override
   void initState() {
-    token = context.read<AuthCubit>().user!.token;
-    userId = context.read<AuthCubit>().user!.id;
+    token = context.read<AuthCubit>().getUser().token;
+    userId = context.read<AuthCubit>().getUser().id;
     context.read<ItemsCubit>().getUserItem(token, userId, true);
     super.initState();
   }

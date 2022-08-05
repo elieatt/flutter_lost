@@ -18,7 +18,7 @@ class FoundItemsPage extends StatefulWidget {
 class _FoundItemsPageState extends State<FoundItemsPage> {
   @override
   void initState() {
-    final String token = context.read<AuthCubit>().user!.token;
+    final String token = context.read<AuthCubit>().getUser().token;
     context.read<ItemsCubit>().fetchFoundItems(token, false);
     super.initState();
   }
@@ -30,7 +30,7 @@ class _FoundItemsPageState extends State<FoundItemsPage> {
     return RefreshIndicator(
       onRefresh: () async {
         BlocProvider.of<ItemsCubit>(context)
-            .fetchFoundItems(context.read<AuthCubit>().user!.token, true);
+            .fetchFoundItems(context.read<AuthCubit>().getUser().token, true);
       },
       child:
           BlocBuilder<ItemsCubit, ItemsState>(buildWhen: (previous, current) {

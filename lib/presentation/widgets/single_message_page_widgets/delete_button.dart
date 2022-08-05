@@ -27,7 +27,7 @@ class DeleteButton extends StatelessWidget {
           bool? toDelete = await showDeleteConfirmDialog(context, "messages");
           if (toDelete != null && toDelete) {
             await context.read<DeleteMessageCubit>().deleteMessage(
-                context.read<AuthCubit>().user!.token, messageId);
+                context.read<AuthCubit>().getUser().token, messageId);
           }
         },
         child: Row(

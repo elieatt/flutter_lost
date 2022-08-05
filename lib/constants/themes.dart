@@ -12,7 +12,7 @@ List<ThemeData> themeArray = [
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: Colors.red,
     ).copyWith(
-      secondary: const Color.fromRGBO(255, 150, 140, 1),
+      secondary: Colors.red,
     ),
   ),
   ThemeData(

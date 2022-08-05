@@ -49,8 +49,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       length: 2,
     );
     BlocProvider.of<MessagesCubit>(context).getRecivedMessages(
-        BlocProvider.of<AuthCubit>(context).user!.token,
-        BlocProvider.of<AuthCubit>(context).user!.id,
+        BlocProvider.of<AuthCubit>(context).getUser().token,
+        BlocProvider.of<AuthCubit>(context).getUser().id,
         true);
   }
 

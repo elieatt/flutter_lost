@@ -138,7 +138,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
             Divider(
               color: Theme.of(context).colorScheme.secondary,
             ),
-            BlocProvider.of<AuthCubit>(context).user!.id ==
+            BlocProvider.of<AuthCubit>(context).getUser().id ==
                     widget.item.user["_id"]
                 ? Container()
                 : UnconstrainedBox(
@@ -170,7 +170,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
                                           context)
                                       .sendMessage(
                                           BlocProvider.of<AuthCubit>(context)
-                                              .user!
+                                              .getUser()
                                               .token,
                                           widget.item.user["_id"],
                                           widget.item.id,

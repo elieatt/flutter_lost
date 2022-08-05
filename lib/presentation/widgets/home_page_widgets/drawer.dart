@@ -44,13 +44,19 @@ Widget buildDrawer(BuildContext context, void Function(int) onTapped,
           ),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              context.read<AuthCubit>().user!.userName,
+              context.read<AuthCubit>().getUser().userName,
               textAlign: TextAlign.left,
             ),
             const SizedBox(
               height: 10,
             ),
-            Text("0" + context.read<AuthCubit>().user!.phoneNumber.substring(4),
+            Text(
+                "0" +
+                    context
+                        .read<AuthCubit>()
+                        .getUser()
+                        .phoneNumber
+                        .substring(4),
                 textAlign: TextAlign.left)
           ])
         ]),
@@ -89,8 +95,8 @@ Widget buildDrawer(BuildContext context, void Function(int) onTapped,
             leading: const Icon(Icons.contact_page),
             title: const Text('My items'),
             onTap: () async {
-              final token = context.read<AuthCubit>().user!.token;
-              final userId = context.read<AuthCubit>().user!.id;
+              final token = context.read<AuthCubit>().getUser().token;
+              final userId = context.read<AuthCubit>().getUser().id;
               Navigator.pop(context);
               await Navigator.of(context).pushNamed("/myItems");
               //refreshing items and messages

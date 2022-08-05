@@ -18,8 +18,8 @@ class MessagesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userId = BlocProvider.of<AuthCubit>(context).user!.id;
-    final token = BlocProvider.of<AuthCubit>(context).user!.token;
+    final userId = BlocProvider.of<AuthCubit>(context).getUser().id;
+    final token = BlocProvider.of<AuthCubit>(context).getUser().token;
 
     index == 0
         ? BlocProvider.of<MessagesCubit>(context)

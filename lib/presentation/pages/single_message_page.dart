@@ -34,11 +34,11 @@ class SingleMessagePage extends StatefulWidget {
 class _SingleMessagePageState extends State<SingleMessagePage> {
   @override
   void initState() {
-    String userId = context.read<AuthCubit>().user!.id;
+    String userId = context.read<AuthCubit>().getUser().id;
     if (widget.message.read == false &&
         widget.message.reciver["_id"] == userId) {
       context.read<MessagesCubit>().readMessage(
-          context.read<AuthCubit>().user!.token, userId, widget.message.id);
+          context.read<AuthCubit>().getUser().token, userId, widget.message.id);
     }
     super.initState();
   }
@@ -154,7 +154,7 @@ class _SingleMessagePageState extends State<SingleMessagePage> {
             MessageText(
                 pageWidth: pageWidth, messagetxt: widget.message.messageText),
             _buildDivider(),
-            BlocProvider.of<AuthCubit>(context).user!.id ==
+            BlocProvider.of<AuthCubit>(context).getUser().id ==
                     widget.message.sender["_id"]
                 ? Container()
                 : Column(
@@ -168,6 +168,7 @@ class _SingleMessagePageState extends State<SingleMessagePage> {
                           contactViaPhoneCall: _contactViaPhoneCall),
                     ],
                   ),
+            _buildDivider(),
             BlocBuilder<DeleteMessageCubit, DeleteMessageState>(
               builder: (context, state) {
                 if (state is DeleteMessageProgress) {

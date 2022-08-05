@@ -13,7 +13,7 @@ class PasswordFormField extends StatelessWidget {
         labelStyle: TextStyle(
             fontSize: 20, color: Theme.of(context).colorScheme.onSurface),
         prefixIcon: Icon(
-          Icons.mode_edit,
+          Icons.password,
           color: Theme.of(context).colorScheme.primary,
         ),
         helperText: 'Password must be More Than 8',

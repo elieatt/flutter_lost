@@ -27,6 +27,15 @@ class User {
     };
   }
 
+  factory User.from(User oldUserObj) {
+    return User(
+        id: oldUserObj.id,
+        email: oldUserObj.email,
+        token: oldUserObj.token,
+        phoneNumber: oldUserObj.phoneNumber,
+        userName: oldUserObj.userName);
+  }
+
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
         id: map['id'] as String,

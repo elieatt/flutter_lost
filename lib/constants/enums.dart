@@ -34,6 +34,8 @@ enum Governorate {
   aleppo
 }
 
+enum EditAccountType { userName, phoneNumber, password }
+
 extension ParseCategoryToString on Category {
   String toShortString() {
     return toString().split('.').last;

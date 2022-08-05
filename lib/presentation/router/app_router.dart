@@ -10,7 +10,7 @@ import 'package:lostsapp/presentation/pages/auth_page.dart';
 import 'package:lostsapp/presentation/pages/settings_page.dart';
 import 'package:lostsapp/presentation/pages/single_item_page.dart';
 import 'package:lostsapp/presentation/pages/single_message_page.dart';
-import 'package:lostsapp/presentation/pages/user_account_settings.dart';
+import 'package:lostsapp/presentation/pages/user_account_settings_page.dart';
 import 'package:lostsapp/presentation/pages/user_items_page.dart';
 
 import '../../logic/cubit/delete_item_cubit.dart';
