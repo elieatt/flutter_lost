@@ -9,7 +9,7 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   late Timer _authTimer;
   final AuthRepository repo;
-  late User? _user;
+  late User? user;
   late DateTime _expire;
 
   AuthCubit(
@@ -18,15 +18,17 @@ class AuthCubit extends Cubit<AuthState> {
     startupLogin();
   }
   User getUser() {
-    return User.from(_user!);
+    return User.from(user!);
   }
 
-  void modify(String? userName, String? phoneNumber) {
-    if (userName != null) {
-      _user!.userName = userName;
+  Future<void> editUserInfo(Map<String, String> info) async {
+    if (info.containsKey("userName")) {
+      user!.userName = info["userName"]!;
+      await repo.editUserInfo(info["userName"]!, "userName");
     }
-    if (phoneNumber != null) {
-      _user!.phoneNumber = phoneNumber;
+    if (info.containsKey("phoneNumber")) {
+      user!.phoneNumber = info["phoneNumber"]!;
+      await repo.editUserInfo(info["phoneNumber"]!, "phoneNumber");
     }
   }
 
@@ -62,9 +64,9 @@ class AuthCubit extends Cubit<AuthState> {
         }
         autoLogout(_expire.difference(DateTime.now()).inSeconds);
 
-        _user = mapofUserAndExpire["user"] as User;
+        user = mapofUserAndExpire["user"] as User;
 
-        emit(AuthLoginedIn(user: _user!));
+        emit(AuthLoginedIn(user: user!));
       }
     });
   }
@@ -81,16 +83,16 @@ class AuthCubit extends Cubit<AuthState> {
     } else {
       _expire = DateTime.parse(response["expire"] as String);
       autoLogout(_expire.difference(DateTime.now()).inSeconds);
-      _user = User.fromMap(response["user"]);
+      user = User.fromMap(response["user"]);
 
-      emit(AuthLoginedIn(user: _user!));
+      emit(AuthLoginedIn(user: user!));
     }
   }
 
   Future<void> logOut() async {
     await repo.deleteStoredToke();
     _authTimer.cancel();
-    _user = null;
+    user = null;
     emit(AuthNoToken());
   }
 

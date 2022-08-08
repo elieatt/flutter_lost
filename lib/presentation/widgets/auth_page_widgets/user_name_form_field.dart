@@ -32,6 +32,8 @@ class UserNameFormField extends StatelessWidget {
         validator: (String? value) {
           if (value == null || value.length < 6 || value.length > 15) {
             return 'Please Enter a valid Name';
+          } else if (value == ininValue && ininValue != null) {
+            return "This is your current User name";
           }
         },
         onSaved: (String? value) {

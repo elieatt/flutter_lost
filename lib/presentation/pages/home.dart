@@ -65,8 +65,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: buildDrawer(context, onTapped, _homePageTabController,
-          _messagesPageTabController),
+      drawer: HomePageDrawer(
+          onTapped: onTapped,
+          htb: _homePageTabController,
+          mtb: _messagesPageTabController),
       appBar: buildAppBar(_selectedindex, _homePageTabController,
           _messagesPageTabController, context),
       body: PageView(

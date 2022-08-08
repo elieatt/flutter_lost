@@ -16,7 +16,7 @@ class ConfirmPasswordFormField extends StatelessWidget {
             Icons.password,
             color: Theme.of(context).colorScheme.primary,
           ),
-          helperText: 'Password must be More Than 8',
+          helperText: 'Password must be More Than 6',
           helperStyle: const TextStyle(fontSize: 15),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
@@ -26,7 +26,9 @@ class ConfirmPasswordFormField extends StatelessWidget {
         obscureText: true,
         validator: (String? value) {
           // ignore: unrelated_type_equality_checks
-          if (value != getPassword()) return 'Passwords dont match';
+          if (value != getPassword() && getPassword() != null) {
+            return 'Passwords dont match';
+          }
         });
   }
 }

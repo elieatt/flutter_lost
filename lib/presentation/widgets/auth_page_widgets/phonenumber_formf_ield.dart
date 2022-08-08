@@ -35,6 +35,8 @@ class PhoneNumberFormField extends StatelessWidget {
               value.length < 13 ||
               value.substring(0, 5) != '+9639') {
             return 'Please Enter a valid phone Number';
+          } else if (value == initValue && initValue != null) {
+            return "This is your current phone number";
           }
         },
         onSaved: (String? value) {

@@ -40,19 +40,22 @@ class _UserItemsPageState extends State<UserItemsPage> {
                   barrierDismissible: false,
                   context: context,
                   builder: (context) {
-                    return AlertDialog(
-                      content: Container(
-                        alignment: Alignment.center,
-                        height: 40,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text("Deleting..."),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              CircularProgressIndicator()
-                            ]),
+                    return WillPopScope(
+                      onWillPop: () async => false,
+                      child: AlertDialog(
+                        content: Container(
+                          alignment: Alignment.center,
+                          height: 40,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text("Deleting..."),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                CircularProgressIndicator()
+                              ]),
+                        ),
                       ),
                     );
                   });

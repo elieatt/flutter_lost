@@ -4,6 +4,7 @@ import 'package:lostsapp/data/models/item.dart';
 import 'package:lostsapp/data/models/message.dart';
 import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/delete_message_cubit.dart';
+import 'package:lostsapp/logic/cubit/edit_user_info_cubit.dart';
 
 import 'package:lostsapp/logic/cubit/send_message_cubit.dart';
 import 'package:lostsapp/presentation/pages/auth_page.dart';
@@ -93,7 +94,9 @@ class AppRouter {
           /*return AuthPage();*/
           return BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
             if (state is AuthLoginedIn) {
-              return UserAcoountSettings();
+              return BlocProvider<EditUserInfoCubit>(
+                  create: (_) => EditUserInfoCubit(),
+                  child: const UserAcoountSettings());
             } else {
               return const AuthPage();
             }

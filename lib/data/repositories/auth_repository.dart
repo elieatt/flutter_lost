@@ -115,4 +115,11 @@ class AuthRepository {
     await prefs.remove("phoneNumber");
     await prefs.remove("userName");
   }
+
+  Future<void> editUserInfo(String value, String key) async {
+    print('value is ' + value + 'key is ' + key);
+    print("yes");
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, value);
+  }
 }

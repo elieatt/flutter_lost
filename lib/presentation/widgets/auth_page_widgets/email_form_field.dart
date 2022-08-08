@@ -34,14 +34,14 @@ class EmailFormField extends StatelessWidget {
       keyboardType: TextInputType.text,
       validator: (String? value) {
         if (value == null ||
-            value.isEmpty ||
+            value.trim().isEmpty ||
             !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-                .hasMatch(value)) {
+                .hasMatch(value.trim())) {
           return 'Enter a valid email.';
         }
       },
       onSaved: (String? value) {
-        setEmail(value);
+        setEmail(value!.trim());
       },
     );
   }

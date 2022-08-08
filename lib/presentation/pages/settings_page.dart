@@ -21,17 +21,20 @@ Future<int> _showChooseThemeDialog<int>(BuildContext context) async {
       barrierDismissible: false,
       context: context,
       builder: (context) {
-        return AlertDialog(
-            title: const Text(
-              "Choose a theme",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [0, 1, 2, 3, 4]
-                    .map((e) =>
-                        ThemeButton(setColorIndex: _setColorIndex, index: e))
-                    .toList()));
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+              title: const Text(
+                "Choose a theme",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [0, 1, 2, 3, 4]
+                      .map((e) =>
+                          ThemeButton(setColorIndex: _setColorIndex, index: e))
+                      .toList())),
+        );
       });
 }
 

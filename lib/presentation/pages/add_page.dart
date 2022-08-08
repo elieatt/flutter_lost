@@ -23,7 +23,7 @@ DateTime _nowDT = DateTime.now();
 
 class AddPage extends StatefulWidget {
   final Function onTapped;
-  TabController htb;
+  final TabController htb;
   AddPage({
     Key? key,
     required this.onTapped,
@@ -88,10 +88,18 @@ class AddPageState extends State<AddPage> {
               duration: Duration(seconds: 1),
             ));
             final String token = context.read<AuthCubit>().getUser().token;
-            widget.htb.index == 1
+            await context.read<ItemsCubit>().fetchFoundItems(token, true);
+            _formData["found"] == "0"
+                ? widget.htb.index = 0
+                : widget.htb.index = 1;
+            /*   widget.htb.index == 1
                 ? await context.read<ItemsCubit>().fetchFoundItems(token, true)
-                : await context.read<ItemsCubit>().fetchLostItems(token, true);
+                : await context.read<ItemsCubit>().fetchLostItems(token, true); */
             widget.onTapped(0);
+            _formData.clear();
+            _formKey.currentState?.reset();
+            _typeTextController.clear();
+            _timeTextController.clear();
           }
         },
         child: Container(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lostsapp/constants/FormFieldMapping.dart';
+import 'package:lostsapp/presentation/widgets/user_account_settings_widgets/FormFieldMapping.dart';
 import 'package:lostsapp/constants/enums.dart';
+import 'package:lostsapp/logic/cubit/edit_user_info_cubit.dart';
 
 import '../../../data/models/user.dart';
 import '../../../logic/cubit/auth_cubit.dart';
@@ -19,8 +20,9 @@ class EditForm extends StatefulWidget {
 class EditFormState extends State<EditForm> {
   late GlobalKey<FormState> _formKey;
   late User _user;
+  final Map<String, String> _editInformationMap = {};
 
-  late String _userName, _phoneNumber;
+  late String? _userName, _phoneNumber;
   String? _password = null, _newPassword = null;
   @override
   void initState() {
@@ -35,19 +37,24 @@ class EditFormState extends State<EditForm> {
 
   @override
   void dispose() {
+    //_editInformationMap.clear();
     super.dispose();
   }
 
   void _setter(String value) {
     switch (widget.editType) {
       case EditAccountType.userName:
-        _userName = value;
+        //_userName = value;
+        _editInformationMap["userName"] = value;
+
         break;
       case EditAccountType.phoneNumber:
-        _phoneNumber = value;
+        // _phoneNumber = value;
+        _editInformationMap["phoneNumber"] = value;
         break;
       case EditAccountType.password:
         _password = value;
+        _editInformationMap["oldPassword"] = value;
         break;
     }
   }
@@ -68,23 +75,40 @@ class EditFormState extends State<EditForm> {
 
   void _newPasswordSetter(String value) {
     if (widget.editType == EditAccountType.password) {
+      _editInformationMap["password"] = value;
       _newPassword = value;
     }
   }
 
   String _getPassword() {
-    return _password!;
+    return _newPassword ?? "";
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {}
+  void _submitForm(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState?.save();
+      context.read<EditUserInfoCubit>().editUserInfo(
+          context.read<AuthCubit>().getUser().token, _editInformationMap);
+      Navigator.of(context).pop();
+      // print(_userName);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: _formKey,
-        child: FormFieldsMapping.mapFieldTypeToFormField(widget.editType,
-            _setter, _initValue(), _newPasswordSetter, _getPassword)!);
+      key: _formKey,
+      child: ListView(
+        children: [
+          FormFieldsMapping.mapFieldTypeToFormField(widget.editType, _setter,
+              _initValue(), _newPasswordSetter, _getPassword)!,
+          ElevatedButton(
+              onPressed: () {
+                _submitForm(context);
+              },
+              child: const Text("Save changes"))
+        ],
+      ),
+    );
   }
 }
