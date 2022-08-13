@@ -27,13 +27,15 @@ class UserCredentialCardView extends StatelessWidget {
     await showDialog(
         context: context,
         builder: (BuildContext _) {
-          return Dialog(
+          return AlertDialog(
+              title: const Text("Edit"),
               alignment: Alignment.center,
-              child: Container(
-                  padding: const EdgeInsets.only(
-                      right: 20, left: 20, top: 40, bottom: 20),
-                  height: editType == EditAccountType.password ? 400 : 200,
-                  width: MediaQuery.of(context).size.width / 2,
+              content: Container(
+
+/*                   padding: const EdgeInsets.only(
+                      right: 20, left: 20, top: 40, bottom: 20), */
+                  height: editType == EditAccountType.password ? 350 : 165,
+                  width: MediaQuery.of(context).size.width * 0.9,
                   child: BlocProvider.value(
                       value: context.read<EditUserInfoCubit>(),
                       child: EditForm(editType: editType!))));

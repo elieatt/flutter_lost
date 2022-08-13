@@ -19,19 +19,25 @@ class MissingPage extends StatefulWidget {
 class _MissingPageState extends State<MissingPage> {
   @override
   void initState() {
-    context
-        .read<ItemsCubit>()
-        .fetchLostItems(context.read<AuthCubit>().getUser().token, false);
-
+    //print("init state");
+    if (context.read<ItemsCubit>().getPostStatus()) {
+      // print("yees");
+      context
+          .read<ItemsCubit>()
+          .fetchLostItems(context.read<AuthCubit>().getUser().token, true);
+    } else if (context.read<ItemsCubit>().getNotFilterdStatus()) {
+      context
+          .read<ItemsCubit>()
+          .fetchLostItems(context.read<AuthCubit>().getUser().token, false);
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     double pageHeight = MediaQuery.of(context).size.height;
-    /*  BlocProvider.of<ItemsCubit>(context)
-        .fetchLostItems(BlocProvider.of<AuthCubit>(context).getUser().token, true); */
-    print('built');
+
+    // print('built');
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -54,6 +60,13 @@ class _MissingPageState extends State<MissingPage> {
               itemBuilder: (BuildContext _, int i) {
                 return ItemCard(state.lostItems[i]);
               });
+        } else if (state is ItemsFilteredItems) {
+          return ListView.builder(
+            itemBuilder: (_, i) {
+              return ItemCard(state.filteredItems[i]);
+            },
+            itemCount: state.filteredItems.length,
+          );
         } else if (state is ItemsNoItemsFound) {
           return Center(
             child: NoItemsFoundSign(pageHeight: pageHeight),

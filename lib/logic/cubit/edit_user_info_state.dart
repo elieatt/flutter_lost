@@ -23,3 +23,15 @@ class EditUserInfoSuccessed extends EditUserInfoState {
     required this.info,
   });
 }
+
+class EditUserDeleteAccountProgress extends EditUserInfoState {}
+
+class EditUserDeleteAcoountFailed extends EditUserInfoState {
+  final String failMessage;
+  EditUserDeleteAcoountFailed({required this.failMessage});
+}
+
+class EditUserDeleteAccountSuccessed extends EditUserInfoState {
+  final String successMessage;
+  EditUserDeleteAccountSuccessed({required this.successMessage});
+}

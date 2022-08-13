@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'itmes_filter_widgets/alert_filter.dart';
+
 AppBar buildAppBar(
     int index, TabController? htc, TabController? mtc, BuildContext context) {
   if (htc != null && index == 0) {
     return AppBar(
       actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list))
+        IconButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertFilter(
+                      htcIndex: htc.index,
+                    );
+                  });
+            },
+            icon: const Icon(Icons.filter_list))
       ],
       bottom: TabBar(
         indicatorColor: Theme.of(context).colorScheme.primary,

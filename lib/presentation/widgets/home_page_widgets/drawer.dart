@@ -11,11 +11,13 @@ class HomePageDrawer extends StatelessWidget {
   final void Function(int) onTapped;
   final TabController htb;
   final TabController mtb;
+  final BuildContext parentContext;
   const HomePageDrawer({
     Key? key,
     required this.onTapped,
     required this.htb,
     required this.mtb,
+    required this.parentContext,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -62,19 +64,19 @@ class HomePageDrawer extends StatelessWidget {
               onTap: () async {
                 final token = context.read<AuthCubit>().getUser().token;
                 final userId = context.read<AuthCubit>().getUser().id;
-                Navigator.pop(context);
+                Navigator.of(context).pop();
                 await Navigator.of(context).pushNamed("/myItems");
                 //refreshing items and messages
                 if (htb.index == 0) {
-                  context.read<ItemsCubit>().fetchLostItems(token, true);
+                  parentContext.read<ItemsCubit>().fetchLostItems(token, true);
                 } else {
-                  context.read<ItemsCubit>().fetchFoundItems(token, true);
+                  parentContext.read<ItemsCubit>().fetchFoundItems(token, true);
                 }
-                await context
+                parentContext
                     .read<MessagesCubit>()
                     .getRecivedMessages(token, userId, true);
                 if (mtb.index == 1) {
-                  await context.read<MessagesCubit>().getSentMessages(
+                  parentContext.read<MessagesCubit>().getSentMessages(
                         token,
                         userId,
                       );

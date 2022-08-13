@@ -24,7 +24,8 @@ class DeleteButton extends StatelessWidget {
               MaterialStateProperty.all<Color>(Colors.red.withOpacity(0.95)),
         ),
         onPressed: () async {
-          bool? toDelete = await showDeleteConfirmDialog(context, "messages");
+          bool? toDelete =
+              await showDeleteConfirmDialog(context, "messages", null);
           if (toDelete != null && toDelete) {
             await context.read<DeleteMessageCubit>().deleteMessage(
                 context.read<AuthCubit>().getUser().token, messageId);

@@ -29,4 +29,20 @@ class EditUserInfoCubit extends Cubit<EditUserInfoState> {
     emit(EditUserInfoFailed(failMessage: "Something went wrong! try again"));
     return;
   }
+
+  Future<void> deleteUserAccount(String token) async {
+    emit(EditUserDeleteAccountProgress());
+    String result = await _euiNS.deleteUserAccount(token);
+    if (result == "successed") {
+      emit(EditUserDeleteAccountSuccessed(
+          successMessage: "Your Account was deleted successfully"));
+      return;
+    } else {
+      emit(EditUserDeleteAcoountFailed(
+          failMessage: result == "errorHttp"
+              ? "Process failed check your internet connection!. "
+              : "Someting went wrong!."));
+      return;
+    }
+  }
 }

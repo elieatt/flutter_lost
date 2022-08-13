@@ -13,6 +13,8 @@ part 'items_state.dart';
 class ItemsCubit extends Cubit<ItemsState> {
   final InternetCubit _internetCubit;
   late InternetState _internetState = _internetCubit.state;
+  bool _notFiltered = true;
+  bool _posted = false;
 /*      InternetConnected(connectionType: ConnectionType.wifi);*/
   late StreamSubscription internetStreamSub;
 
@@ -23,6 +25,29 @@ class ItemsCubit extends Cubit<ItemsState> {
     this.repo,
   ) : super(ItemsInitial()) {
     listenToInternetCubit();
+  }
+  bool getNotFilterdStatus() {
+    return _notFiltered;
+  }
+
+  void setFiltredStatusTrue() {
+    _notFiltered = false;
+    Future.delayed(
+      const Duration(microseconds: 50),
+      () => _notFiltered = true,
+    );
+  }
+
+  bool getPostStatus() {
+    return _posted;
+  }
+
+  void posted() {
+    _posted = true;
+    Future.delayed(
+      const Duration(milliseconds: 50),
+      () => _posted = false,
+    );
   }
 
   void listenToInternetCubit() {
@@ -93,7 +118,7 @@ class ItemsCubit extends Cubit<ItemsState> {
   Future<void> filterItems(String token, bool foundOrLost, String category,
       String governorate, bool refresh) async {
     emit(ItemsInitial());
-    if (_internetState is InternetDisconnected) {
+    if (_internetState is InternetDisconnected && refresh) {
       emit(ItemsNoInternet());
       return;
     }
@@ -139,6 +164,7 @@ class ItemsCubit extends Cubit<ItemsState> {
 
   @override
   void onChange(Change<ItemsState> change) {
+    //print(change);
     super.onChange(change);
   }
 }

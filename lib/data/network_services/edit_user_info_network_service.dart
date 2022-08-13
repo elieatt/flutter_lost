@@ -24,4 +24,21 @@ class EditUserInfoNetworkService {
     }
     return "failed";
   }
+
+  Future<String> deleteUserAccount(String token) async {
+    http.Response response;
+    try {
+      response = await http.delete(Uri.parse(ENDPOINT + "/users"), headers: {
+        "Authorization": 'bare $token',
+        'Content-Type': "application/json"
+      });
+    } catch (e) {
+      print('http request error' + e.toString());
+      return "errorHttp";
+    }
+    if (response.statusCode == 201) {
+      return "successed";
+    }
+    return "failed";
+  }
 }

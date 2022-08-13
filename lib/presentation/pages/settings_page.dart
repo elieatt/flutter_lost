@@ -16,28 +16,6 @@ void _setColorIndex(int index) {
   _colorIndex = index;
 }
 
-Future<int> _showChooseThemeDialog<int>(BuildContext context) async {
-  return await showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-              title: const Text(
-                "Choose a theme",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [0, 1, 2, 3, 4]
-                      .map((e) =>
-                          ThemeButton(setColorIndex: _setColorIndex, index: e))
-                      .toList())),
-        );
-      });
-}
-
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
@@ -45,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(title: const Text('Settings')),
       body: Container(
           alignment: Alignment.center,
-          padding: const EdgeInsets.only(top: 20, right: 50, left: 50),
+          padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
           child: ListView(
             children: [
               ListTile(
@@ -66,5 +44,27 @@ class _SettingsPageState extends State<SettingsPage> {
             ],
           )),
     );
+  }
+
+  Future<int> _showChooseThemeDialog<int>(BuildContext context) async {
+    return await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+                title: const Text(
+                  "Choose a theme",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [0, 1, 2, 3, 4]
+                        .map((e) => ThemeButton(
+                            setColorIndex: _setColorIndex, index: e))
+                        .toList())),
+          );
+        });
   }
 }

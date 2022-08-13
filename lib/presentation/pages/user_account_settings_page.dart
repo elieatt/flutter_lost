@@ -8,6 +8,8 @@ import 'package:lostsapp/logic/cubit/auth_cubit.dart';
 import 'package:lostsapp/logic/cubit/edit_user_info_cubit.dart';
 import 'package:lostsapp/presentation/widgets/dialogs/awesome_dia.dart';
 
+import 'package:lostsapp/presentation/widgets/user_account_settings_widgets/delete_account_button.dart';
+
 import 'package:lostsapp/presentation/widgets/user_account_settings_widgets/user_credential_view.dart';
 import '../../data/models/user.dart';
 
@@ -41,7 +43,7 @@ class _UserAcoountSettingsState extends State<UserAcoountSettings> {
     });
   }
 
-  void _showProccessingDialog() {
+  void _showProccessingDialog(String proccessMessage) {
     showDialog(
         context: context,
         builder: (context) {
@@ -53,12 +55,12 @@ class _UserAcoountSettingsState extends State<UserAcoountSettings> {
                   width: MediaQuery.of(context).size.width / 2,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text("proccessing"),
-                      SizedBox(
+                    children: [
+                      Text(proccessMessage),
+                      const SizedBox(
                         width: 50,
                       ),
-                      CircularProgressIndicator()
+                      const CircularProgressIndicator()
                     ],
                   )),
             ),
@@ -105,7 +107,12 @@ class _UserAcoountSettingsState extends State<UserAcoountSettings> {
           icon: Icons.password,
           editable: true,
           editType: EditAccountType.password,
-        )
+        ),
+        const Divider(),
+        Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.05),
+            child: DeleteAccountButton()),
       ]),
     );
   }
@@ -115,14 +122,14 @@ class _UserAcoountSettingsState extends State<UserAcoountSettings> {
     return BlocListener<EditUserInfoCubit, EditUserInfoState>(
       listener: (context, state) async {
         if (state is EditUserInfoProgress) {
-          _showProccessingDialog();
+          _showProccessingDialog("proccessing");
         } else if (state is EditUserInfoFailed) {
           Navigator.of(context).pop();
           buildAwrsomeDia(context, "Failed", state.failMessage, "OK",
                   type: DialogType.ERROR)
               .show();
         } else if (state is EditUserInfoSuccessed) {
-          print("state info " + state.info.toString());
+          //print("state info " + state.info.toString());
           Navigator.of(context).pop();
 
           await context.read<AuthCubit>().editUserInfo(state.info);
@@ -131,6 +138,22 @@ class _UserAcoountSettingsState extends State<UserAcoountSettings> {
                   type: DialogType.SUCCES)
               .show();
           updateInfo();
+        } else if (state is EditUserDeleteAccountProgress) {
+          _showProccessingDialog("Deleting");
+        } else if (state is EditUserDeleteAcoountFailed) {
+          Navigator.of(context).pop();
+          buildAwrsomeDia(context, "Failed", state.failMessage, "OK",
+                  type: DialogType.ERROR)
+              .show();
+        } else if (state is EditUserDeleteAccountSuccessed) {
+          Navigator.of(context).pop();
+          Navigator.pushReplacementNamed(context, "/");
+          context.read<AuthCubit>().logOut();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Your account was deleted successfully"),
+            ),
+          );
         }
       },
       child: _buildPageContent(context),

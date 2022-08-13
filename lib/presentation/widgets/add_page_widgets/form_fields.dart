@@ -67,7 +67,7 @@ void _showDatePicker(BuildContext context) {
           headerColor: Theme.of(context).colorScheme.primary,
           backgroundColor: Theme.of(context).colorScheme.background,
           itemStyle: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Theme.of(context).colorScheme.onBackground,
               fontWeight: FontWeight.bold,
               fontSize: 18),
           doneStyle: const TextStyle(color: Colors.white, fontSize: 16)),

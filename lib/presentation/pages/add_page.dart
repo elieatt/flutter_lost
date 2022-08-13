@@ -88,7 +88,8 @@ class AddPageState extends State<AddPage> {
               duration: Duration(seconds: 1),
             ));
             final String token = context.read<AuthCubit>().getUser().token;
-            await context.read<ItemsCubit>().fetchFoundItems(token, true);
+            context.read<ItemsCubit>().posted();
+
             _formData["found"] == "0"
                 ? widget.htb.index = 0
                 : widget.htb.index = 1;

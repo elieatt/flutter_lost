@@ -19,7 +19,12 @@ class _FoundItemsPageState extends State<FoundItemsPage> {
   @override
   void initState() {
     final String token = context.read<AuthCubit>().getUser().token;
-    context.read<ItemsCubit>().fetchFoundItems(token, false);
+    if (context.read<ItemsCubit>().getPostStatus()) {
+      context.read<ItemsCubit>().fetchFoundItems(token, true);
+    } else if (context.read<ItemsCubit>().getNotFilterdStatus()) {
+      context.read<ItemsCubit>().fetchFoundItems(token, false);
+    }
+
     super.initState();
   }
 
@@ -51,6 +56,13 @@ class _FoundItemsPageState extends State<FoundItemsPage> {
               itemBuilder: (BuildContext context, int i) {
                 return ItemCard(state.foundItems[i]);
               });
+        } else if (state is ItemsFilteredItems) {
+          return ListView.builder(
+            itemBuilder: (_, i) {
+              return ItemCard(state.filteredItems[i]);
+            },
+            itemCount: state.filteredItems.length,
+          );
         } else if (state is ItemsNoItemsFound) {
           return Center(
               child: NoItemsFoundSign(

@@ -36,7 +36,8 @@ class ItemListTile extends StatelessWidget {
               color: Colors.red,
             ),
             onPressed: () async {
-              bool? descision = await showDeleteConfirmDialog(context, "items");
+              bool? descision =
+                  await showDeleteConfirmDialog(context, "items", null);
               if (descision != null && descision == true) {
                 final String token = context.read<AuthCubit>().getUser().token;
                 await context

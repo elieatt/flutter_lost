@@ -102,6 +102,9 @@ class EditFormState extends State<EditForm> {
         children: [
           FormFieldsMapping.mapFieldTypeToFormField(widget.editType, _setter,
               _initValue(), _newPasswordSetter, _getPassword)!,
+          const SizedBox(
+            height: 20,
+          ),
           ElevatedButton(
               onPressed: () {
                 _submitForm(context);

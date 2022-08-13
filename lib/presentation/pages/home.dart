@@ -25,6 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late HomePageDrawer _homeDrawer;
   int _selectedindex = 0;
 
   late TabController _homePageTabController;
@@ -36,7 +37,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       _selectedindex = index;
     });
     _pageController.animateToPage(index,
-        duration: Duration(milliseconds: 300), curve: Curves.easeInOutQuart);
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOutQuart);
   }
 
   @override
@@ -52,6 +54,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         BlocProvider.of<AuthCubit>(context).getUser().token,
         BlocProvider.of<AuthCubit>(context).getUser().id,
         true);
+    _homeDrawer = HomePageDrawer(
+        onTapped: onTapped,
+        htb: _homePageTabController,
+        mtb: _messagesPageTabController,
+        parentContext: context);
   }
 
   @override
@@ -65,10 +72,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: HomePageDrawer(
-          onTapped: onTapped,
-          htb: _homePageTabController,
-          mtb: _messagesPageTabController),
+      drawer: _homeDrawer,
       appBar: buildAppBar(_selectedindex, _homePageTabController,
           _messagesPageTabController, context),
       body: PageView(

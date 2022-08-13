@@ -21,7 +21,7 @@ class PostItemCubit extends Cubit<PostItemState> {
 
   @override
   void onChange(Change<PostItemState> change) {
-    print(change);
+    //print(change);
     super.onChange(change);
   }
 }

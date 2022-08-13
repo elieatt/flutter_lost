@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
 
 Future<bool?> showDeleteConfirmDialog<bool>(
-    BuildContext context, String objectName) async {
+    BuildContext context, String objectName, String? dialogMessage) async {
   return await showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text("Are you sure?",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                // color: Theme.of(context).colorScheme.secondary),
-              )),
-          content: Text(
-            "Deleted $objectName can't be resotred",
-            // style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-          ),
-          actions: [
-            TextButton(
-              child: const Text("Cancel"),
-              onPressed: () => Navigator.of(context).pop(false),
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            title: const Text("Are you sure?",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  // color: Theme.of(context).colorScheme.secondary),
+                )),
+            content: Text(
+              dialogMessage ?? "Deleted $objectName can't be resotred",
+              // style: TextStyle(color: Theme.of(context).colorScheme.secondary),
             ),
-            TextButton(
-              child: const Text(
-                "Delete",
-                style: TextStyle(color: Colors.red),
+            actions: [
+              TextButton(
+                child: const Text("Cancel"),
+                onPressed: () => Navigator.of(context).pop(false),
               ),
-              onPressed: () => Navigator.of(context).pop(true),
-            )
-          ],
+              TextButton(
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(color: Colors.red),
+                ),
+                onPressed: () => Navigator.of(context).pop(true),
+              )
+            ],
+          ),
         );
       });
 }

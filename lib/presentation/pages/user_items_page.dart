@@ -13,6 +13,8 @@ import 'package:lostsapp/presentation/widgets/user_items_page_widgets/item_list_
 import '../widgets/items_loading_signs/error_sign.dart';
 
 class UserItemsPage extends StatefulWidget {
+  const UserItemsPage({Key? key}) : super(key: key);
+
   @override
   State<UserItemsPage> createState() => _UserItemsPageState();
 }
@@ -24,7 +26,7 @@ class _UserItemsPageState extends State<UserItemsPage> {
   void initState() {
     token = context.read<AuthCubit>().getUser().token;
     userId = context.read<AuthCubit>().getUser().id;
-    context.read<ItemsCubit>().getUserItem(token, userId, true);
+    context.read<ItemsCubit>().getUserItem(token, userId, false);
     super.initState();
   }
 
@@ -36,29 +38,7 @@ class _UserItemsPageState extends State<UserItemsPage> {
         body: BlocListener<DeleteItemCubit, DeleteItemState>(
           listener: (context, state) {
             if (state is DeleteItemProgress) {
-              showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) {
-                    return WillPopScope(
-                      onWillPop: () async => false,
-                      child: AlertDialog(
-                        content: Container(
-                          alignment: Alignment.center,
-                          height: 40,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text("Deleting..."),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                CircularProgressIndicator()
-                              ]),
-                        ),
-                      ),
-                    );
-                  });
+              _showDeletingDialog();
             } else if (state is DeleteItemFailed) {
               Navigator.of(context).pop();
               buildAwrsomeDia(
@@ -95,9 +75,35 @@ class _UserItemsPageState extends State<UserItemsPage> {
                   ),
                 );
               }
-              return ErrorSign();
+              return const ErrorSign();
             },
           ),
         ));
+  }
+
+  void _showDeletingDialog() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              content: Container(
+                alignment: Alignment.center,
+                height: 40,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text("Deleting..."),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      CircularProgressIndicator()
+                    ]),
+              ),
+            ),
+          );
+        });
   }
 }
